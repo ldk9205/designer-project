@@ -1,0 +1,53 @@
+plugins {
+    id 'java' // Java 프로젝트
+    id 'org.springframework.boot' version '3.2.0' // Spring Boot 플러그인
+    id 'io.spring.dependency-management' version '1.1.4' // 의존성 관리 플러그인
+}
+
+group = 'com.example' // 패키지 그룹명
+version = '0.0.1-SNAPSHOT' // 프로젝트 버전
+
+repositories {
+    mavenCentral() // 의존성 다운로드 경로
+}
+
+dependencies {
+    // Spring Boot Starter (웹 MVC)
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // MyBatis + Spring Boot
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+
+    // MySQL (실무 DB)
+    implementation 'mysql:mysql-connector-java:8.0.33'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Validation (@NotNull, @Size 등)
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Security Crypto 의존성
+    implementation 'org.springframework.security:spring-security-crypto'
+
+    // JWT 라이브러리 추가
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // ✅ Spring Security (이게 없어서 에러 난 것)
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // H2 Database (테스트용 인메모리 DB)
+    runtimeOnly 'com.h2database:h2'
+
+    // JUnit (Spring Boot Starter Test에 이미 포함)
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+// JUnit 설정
+test {
+    useJUnitPlatform()
+}

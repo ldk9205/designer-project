@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.designer.auth.mapper.AuthMapper">
+
+    <!-- 회원가입 -->
+    <insert id="insertDesigner" parameterType="com.designer.auth.dto.SignupRequestDto">
+        INSERT INTO designers (
+        email,
+        password,
+        name,
+        phone,
+        created_at
+        ) VALUES (
+        #{email},
+        #{password},
+        #{name},
+        #{phone},
+        NOW()
+        )
+    </insert>
+
+    <!-- 로그인: 이메일로 디자이너 조회 -->
+    <select id="findAuthByEmail"
+            parameterType="string"
+            resultType="com.designer.auth.dto.DesignerAuthDto">
+        SELECT
+        id,
+        email,
+        password,
+        name
+        FROM designers
+        WHERE email = #{email}
+    </select>
+
+    <!-- 내 정보 조회 -->
+    <select id="findById"
+            parameterType="long"
+            resultType="com.designer.auth.dto.DesignerDto">
+        SELECT
+        id,
+        email,
+        name,
+        phone,
+        created_at
+        FROM designers
+        WHERE id = #{id}
+    </select>
+
+    <!-- 회원 탈퇴 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM designers
+        WHERE id = #{id}
+    </delete>
+
+    <!-- 이메일 중복 체크 -->
+    <select id="countByEmail"
+            parameterType="string"
+            resultType="int">
+        SELECT COUNT(*)
+        FROM designers
+        WHERE email = #{email}
+    </select>
+
+</mapper>
