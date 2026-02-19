@@ -1,7 +1,20 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import "../styles/HomePage.css";
+import React, { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
-const HomePage = () => {
-    return;
+export default function HomePage() {
+  const auth = useContext(AuthContext);
+
+  return (
+    <div style={{ padding: 24 }}>
+      <h2>Home</h2>
+      <div>안녕하세요, {auth?.designer?.name}님</div>
+
+      <button
+        style={{ marginTop: 12 }}
+        onClick={() => auth?.logout()}
+      >
+        로그아웃
+      </button>
+    </div>
+  );
 }
