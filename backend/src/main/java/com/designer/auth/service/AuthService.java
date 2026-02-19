@@ -1,30 +1,21 @@
 package com.designer.auth.service;
 
-import com.designer.auth.dto.AuthResponseDto;
-import com.designer.auth.dto.DesignerDto;
-import com.designer.auth.dto.LoginRequestDto;
-import com.designer.auth.dto.SignupRequestDto;
+import com.designer.auth.dto.*;
 
 public interface AuthService {
 
-    /**
-     * 회원가입
-     */
     void signup(SignupRequestDto signupRequestDto);
 
-    /**
-     * 로그인
-     * @return accessToken + 디자이너 정보
-     */
-    AuthResponseDto login(LoginRequestDto loginRequestDto);
+    // ✅ 로그인 + refreshToken 발급(쿠키로 내려주기 위해 refreshToken도 함께 리턴)
+    AuthIssueResult loginAndIssue(LoginRequestDto loginRequestDto);
 
-    /**
-     * 내 정보 조회 (/auth/me)
-     */
+    // ✅ refreshToken 검증 + rotation + 새 access 발급
+    AuthIssueResult refreshAndIssue(String refreshToken);
+
+    // ✅ 로그아웃(현재 refreshToken 폐기)
+    void logout(String refreshToken);
+
     DesignerDto getMe(Long designerId);
 
-    /**
-     * 회원 탈퇴 (/auth/me DELETE)
-     */
     void deleteMe(Long designerId);
 }

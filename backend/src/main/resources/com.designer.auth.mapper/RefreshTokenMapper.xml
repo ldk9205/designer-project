@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.designer.auth.mapper.RefreshTokenMapper">
+
+    <insert id="insert" parameterType="com.designer.auth.dto.RefreshTokenDto">
+        INSERT INTO refresh_tokens (
+        designer_id, token, expires_at, revoked, created_at, updated_at
+        ) VALUES (
+        #{designerId}, #{token}, #{expiresAt}, #{revoked}, NOW(), NOW()
+        )
+    </insert>
+
+    <!-- revoked=0 AND expires_at > NOW() 인 토큰만 유효 -->
+    <select id="findValidByToken" parameterType="string"
+            resultType="com.designer.auth.dto.RefreshTokenDto">
+        SELECT
+        id,
+        designer_id AS designerId,
+        token,
+        expires_at AS expiresAt,
+        revoked,
+        created_at AS createdAt,
+        updated_at AS updatedAt
+        FROM refresh_tokens
+        WHERE token = #{token}
+        AND revoked = 0
+        AND expires_at > NOW()
+        LIMIT 1
+    </select>
+
+    <update id="revokeByToken" parameterType="string">
+        UPDATE refresh_tokens
+        SET revoked = 1, updated_at = NOW()
+        WHERE token = #{token}
+    </update>
+
+    <update id="revokeAllByDesignerId" parameterType="long">
+        UPDATE refresh_tokens
+        SET revoked = 1, updated_at = NOW()
+        WHERE designer_id = #{designerId}
+        AND revoked = 0
+    </update>
+
+</mapper>

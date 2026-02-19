@@ -98,3 +98,18 @@ CREATE TABLE IF NOT EXISTS board_comments (
         REFERENCES designers(id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS refresh_tokens (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  designer_id BIGINT NOT NULL,
+  token VARCHAR(255) NOT NULL UNIQUE,
+  expires_at DATETIME NOT NULL,
+  revoked TINYINT(1) NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_refresh_tokens_designer
+    FOREIGN KEY (designer_id) REFERENCES designers(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE INDEX idx_refresh_tokens_designer_id ON refresh_tokens(designer_id);
+CREATE INDEX idx_refresh_tokens_expires_at ON refresh_tokens(expires_at);

@@ -18,7 +18,7 @@ public class JwtTokenProvider {
             "designer-project-jwt-secret-key-designer-project";
 
     // Access Token 유효기간 (1시간)
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 15;
 
     private final SecretKey key =
             Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
