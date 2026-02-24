@@ -6,8 +6,7 @@ import com.designer.auth.dto.SignupRequestDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-// designers 테이블에 대한 DB 접근 인터페이스
-// 로그인 / 회원가입 / 내 정보 조회 / 회원 탈퇴 처리
+// designers 테이블에 대한 DB 접근 interface
 @Mapper
 public interface AuthMapper {
     // 회원 가입 : designers 테이블에 디자이너 계정 생성
