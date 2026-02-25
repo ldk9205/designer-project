@@ -5,8 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.designer.auth.mapper")  // Mapper 패키지 지정
-@MapperScan("com.designer.*")
+@MapperScan(basePackages = {
+        "com.designer.auth.mapper",
+        "com.designer.image.mapper",
+        "com.designer.treatment.mapper"
+})
 public class DesignerApplication {
     public static void main(String[] args) {
         SpringApplication.run(DesignerApplication.class, args);
