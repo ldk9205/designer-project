@@ -47,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
 
     // 로그인 + 토큰 발급(access + refresh)
     @Override
-    @Transactional(readOnly = true) // 현재 코드상 refresh insert가 있는데 "readOnly=true"면 DB 설정에 따라 문제 가능
+    @Transactional // 현재 코드상 refresh insert가 있는데 "readOnly=true"면 DB 설정에 따라 문제 가능
     public AuthIssueResult loginAndIssue(LoginRequestDto loginRequestDto) {
 
         // 로그인용 조회(비밀번호 포함)
