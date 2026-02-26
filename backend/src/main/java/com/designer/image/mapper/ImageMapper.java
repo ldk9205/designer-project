@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ImageMapper {
@@ -32,4 +33,6 @@ public interface ImageMapper {
      * 이미지 삭제
      */
     void deleteById(@Param("id") Long id);
+
+    List<Map<String, Object>> findCommunityList();
 }
