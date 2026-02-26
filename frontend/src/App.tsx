@@ -6,12 +6,9 @@ import HomePage from "./pages/HomePage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SignupPage from "./pages/SignupPage";
 import CommunityPage from "./pages/CommunityPage";
-<<<<<<< HEAD
 import UploadPage from "./pages/UploadPage";
 
-=======
 import MyPage from "./pages/MyPage";
->>>>>>> origin/main
 
 export default function App() {
   return (
