@@ -1,5 +1,6 @@
 package com.designer.image.controller;
 
+import com.designer.image.dto.CommunityResponseDto;
 import com.designer.image.dto.ImageResponseDto;
 import com.designer.image.service.ImageServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -68,5 +69,17 @@ public class ImageController {
         imageServiceImpl.deleteImage(imageId, designerId);
 
         return ResponseEntity.ok().body("이미지 삭제 성공");
+    }
+
+    /**
+     * 커뮤니티 전체 이미지 조회
+     * GET /api/community
+     */
+    @GetMapping("/community")
+    public ResponseEntity<List<CommunityResponseDto>> getCommunityList() {
+
+        return ResponseEntity.ok(
+                imageServiceImpl.getCommunityList()
+        );
     }
 }

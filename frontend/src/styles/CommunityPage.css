@@ -1,0 +1,84 @@
+.community-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.community-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.community-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.community-header button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background-color: #111827;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.community-header button:hover {
+  opacity: 0.8;
+}
+
+.loading-text {
+  text-align: center;
+  padding: 80px 0;
+}
+
+/* ===== Grid ===== */
+.community-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+}
+
+/* ===== Card ===== */
+.community-card {
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+
+.community-card:hover {
+  transform: translateY(-5px);
+}
+
+.community-card img {
+  width: 100%;
+  height: 320px;
+  object-fit: contain;
+  background: #f3f4f6;
+}
+
+.community-info {
+  padding: 12px;
+  font-size: 13px;
+  text-align: center;
+  background: #fafafa;
+}
+
+/* ===== 모바일 최적화 ===== */
+@media (max-width: 480px) {
+  .community-wrapper {
+    margin: 20px auto;
+    padding: 15px;
+  }
+
+  .community-card img {
+    height: 220px;
+  }
+}

@@ -1,6 +1,7 @@
 package com.designer.image.service;
 
 import com.designer.image.dto.ImageResponseDto;
+import com.designer.image.dto.CommunityResponseDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -31,4 +32,9 @@ public interface ImageService {
             Long imageId,
             Long designerId
     );
+
+    /**
+     * 🔥 커뮤니티 전체 이미지 조회
+     */
+    List<CommunityResponseDto> getCommunityList();
 }

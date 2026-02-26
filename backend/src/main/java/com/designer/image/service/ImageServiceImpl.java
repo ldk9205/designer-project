@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import com.designer.image.dto.CommunityResponseDto;
+import java.util.Map;
 
 import java.util.List;
 import java.util.UUID;
@@ -164,6 +166,52 @@ public class ImageServiceImpl implements ImageService{
                 uuid +
                 "_" +
                 originalFilename;
+    }
+
+    @Transactional(readOnly = true)
+    public List<CommunityResponseDto> getCommunityList() {
+
+        // 1️⃣ DB에서 JOIN 조회
+        List<Map<String, Object>> rows =
+                imageMapper.findCommunityList();
+
+        // 2️⃣ presigned URL 변환 + DTO 변환
+        return rows.stream()
+                .map(row -> {
+
+                    Long imageId =
+                            ((Number) row.get("imageId")).longValue();
+
+                    String imageKey =
+                            (String) row.get("imageUrl");
+
+                    String treatmentDate =
+                            row.get("treatmentDate").toString();
+
+                    String category =
+                            (String) row.get("category");
+
+                    String styleName =
+                            (String) row.get("styleName");
+
+                    String customerName =
+                            (String) row.get("customerName");
+
+                    String presignedUrl =
+                            s3ServiceImpl.generateDownloadPresignedUrl(
+                                    imageKey
+                            );
+
+                    return new CommunityResponseDto(
+                            imageId,
+                            customerName,
+                            treatmentDate,
+                            category,
+                            styleName,
+                            presignedUrl
+                    );
+                })
+                .toList();
     }
 }
 

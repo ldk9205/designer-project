@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.designer.imageDto.mapper.ImageMapper">
+<mapper namespace="com.designer.image.mapper.ImageMapper">
 
     <!-- ===============================
          이미지 등록
@@ -33,7 +33,7 @@
     ================================ -->
     <select id="findById"
             parameterType="long"
-            resultType="com.designer.imageDto.dto.ImageDto">
+            resultType="com.designer.image.dto.ImageDto">
 
         SELECT
             id,
@@ -52,7 +52,7 @@
     ================================ -->
     <select id="findByTreatmentId"
             parameterType="long"
-            resultType="com.designer.imageDto.dto.ImageDto">
+            resultType="com.designer.image.dto.ImageDto">
 
         SELECT
             id,
@@ -78,4 +78,17 @@
 
     </delete>
 
+    <select id="findCommunityList" resultType="map">
+        SELECT
+            ti.id AS imageId,
+            ti.image_url AS imageUrl,
+            t.treatment_date AS treatmentDate,
+            t.category AS category,
+            t.style_name AS styleName,
+            c.name AS customerName
+        FROM treatment_images ti
+                 JOIN treatments t ON ti.treatment_id = t.id
+                 JOIN customers c ON t.customer_id = c.id
+        ORDER BY t.treatment_date DESC
+    </select>
 </mapper>

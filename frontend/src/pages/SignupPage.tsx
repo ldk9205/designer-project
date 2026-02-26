@@ -81,78 +81,76 @@ export default function SignupPage() {
         <p className="signup-subtitle">디자이너 계정 생성</p>
 
         <form className="signup-form" onSubmit={onSubmit}>
-          <label className="signup-label">
-            이메일 *
+          <div className="input-group">
             <input
-              className="signup-input"
               type="email"
+              placeholder="이메일 *"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
-              placeholder="example@domain.com"
+              required
             />
-          </label>
+          </div>
 
-          <label className="signup-label">
-            비밀번호 *
+          <div className="input-group">
             <input
-              className="signup-input"
               type="password"
+              placeholder="비밀번호 *"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="new-password"
-              placeholder="비밀번호"
+              required
             />
-          </label>
+          </div>
 
-          <label className="signup-label">
-            비밀번호 확인 *
+          <div className="input-group">
             <input
-              className="signup-input"
               type="password"
+              placeholder="비밀번호 확인 *"
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
               autoComplete="new-password"
-              placeholder="비밀번호 확인"
+              required
             />
-          </label>
+          </div>
 
-          <label className="signup-label">
-            이름 *
+          {password2 && password !== password2 && (
+            <div className="signup-error">비밀번호가 일치하지 않습니다.</div>
+          )}
+
+          <div className="input-group">
             <input
-              className="signup-input"
               type="text"
+              placeholder="이름 *"
               value={name}
               onChange={(e) => setName(e.target.value)}
               autoComplete="name"
-              placeholder="이름"
+              required
             />
-          </label>
+          </div>
 
-          <label className="signup-label">
-            전화번호
+          <div className="input-group">
             <input
-              className="signup-input"
               type="tel"
+              placeholder="전화번호 (선택)"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               autoComplete="tel"
-              placeholder="010-1234-5678"
             />
-          </label>
+          </div>
 
           {error && <div className="signup-error">{error}</div>}
           {success && <div className="signup-success">{success}</div>}
 
-          <button className="signup-button" type="submit" disabled={isSubmitting}>
+          <button type="submit" disabled={isSubmitting}>
             {isSubmitting ? '가입 중...' : '회원가입'}
           </button>
         </form>
 
         <div className="signup-links">
-          <button type="button" className="signup-link" onClick={() => navigate('/login')}>
-            로그인으로 돌아가기
-          </button>
+          <span onClick={() => navigate('/login')}>
+            이미 계정이 있으신가요? 로그인
+          </span>
         </div>
       </div>
     </div>

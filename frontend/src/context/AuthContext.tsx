@@ -1,7 +1,13 @@
-import React, { createContext, useEffect, useMemo, useRef, useState } from 'react';
-import api, { setAccessToken } from '../api/axios';
-import { loginApi, meApi, logoutApi, type Designer } from '../api/auth';
-import { getExpMs } from '../utils/jwt';
+import React, {
+  createContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import api, { setAccessToken } from "../api/axios";
+import { loginApi, meApi, logoutApi, type Designer } from "../api/auth";
+import { getExpMs } from "../utils/jwt";
 
 type AuthContextType = {
   designer: Designer | null;
@@ -46,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const forceRefresh = async () => {
-    const res = await api.post('/auth/refresh'); // 쿠키 기반
+    const res = await api.post("/auth/refresh"); // 쿠키 기반
     const newToken = res.data?.accessToken as string;
 
     setAccessToken(newToken);
@@ -77,7 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const bootstrap = async () => {
       try {
-        const res = await api.post('/auth/refresh');
+        const res = await api.post("/auth/refresh");
         const token = res.data?.accessToken as string;
 
         setAccessToken(token);
@@ -100,7 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo(
     () => ({ designer, isAuthReady, login, logout, forceRefresh }),
-    [designer, isAuthReady]
+    [designer, isAuthReady],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
