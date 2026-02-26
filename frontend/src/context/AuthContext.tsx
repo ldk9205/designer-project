@@ -51,16 +51,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, delay);
   };
 
-  const forceRefresh = async () => {
-    const res = await api.post("/auth/refresh"); // 쿠키 기반
-    const newToken = res.data?.accessToken as string;
+  // ★ 추가: refresh(쿠키) → 토큰 세팅 → me 로드 로직을 한 곳으로 통합
+  const refreshAndLoadMe = async () => { // ★
+    const res = await api.post("/auth/refresh"); // ★
+    const newToken = res.data?.accessToken as string; // ★
 
-    setAccessToken(newToken);
-    scheduleProactiveRefresh(newToken);
+    setAccessToken(newToken); // ★
+    scheduleProactiveRefresh(newToken); // ★
 
-    const me = await meApi();
-    setDesigner(me);
-  };
+    const me = await meApi(); // ★
+    setDesigner(me); // ★
+  }; // ★
+
+  // const forceRefresh = async () => {
+  //   const res = await api.post("/auth/refresh"); // 쿠키 기반
+  //   const newToken = res.data?.accessToken as string;
+
+  //   setAccessToken(newToken);
+  //   scheduleProactiveRefresh(newToken);
+
+  //   const me = await meApi();
+  //   setDesigner(me);
+  // };
+
+  const forceRefresh = async () => { // ★
+    await refreshAndLoadMe(); // ★
+  }; // ★
 
   const login = async (email: string, password: string) => {
     const data = await loginApi(email, password);
@@ -83,14 +99,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const bootstrap = async () => {
       try {
-        const res = await api.post("/auth/refresh");
-        const token = res.data?.accessToken as string;
+        // const res = await api.post("/auth/refresh");
+        // const token = res.data?.accessToken as string;
 
-        setAccessToken(token);
-        scheduleProactiveRefresh(token);
+        // setAccessToken(token);
+        // scheduleProactiveRefresh(token);
 
-        const me = await meApi();
-        setDesigner(me);
+        // const me = await meApi();
+        // setDesigner(me);
       } catch {
         setAccessToken(null);
         setDesigner(null);

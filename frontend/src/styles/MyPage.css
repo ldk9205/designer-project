@@ -1,0 +1,119 @@
+/* =========================
+   MyPage 전체 Wrapper
+========================= */
+.mypage-wrapper {
+  min-height: 100vh;
+  background: #f3f4f6;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* =========================
+   카드 컨테이너
+========================= */
+.mypage-card {
+  width: 100%;
+  max-width: 640px;
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* =========================
+   제목
+========================= */
+.mypage-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #111827;
+}
+
+/* =========================
+   정보 리스트
+========================= */
+.mypage-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.mypage-info-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f1f1;
+  padding-bottom: 6px;
+}
+
+.mypage-label {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+/* =========================
+   버튼 영역
+========================= */
+.mypage-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+}
+
+/* 공통 버튼 스타일 */
+.mypage-btn {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+/* 새로고침 버튼 */
+.mypage-btn-refresh {
+  background: #111827;
+  color: white;
+}
+
+.mypage-btn-refresh:hover {
+  background: #1f2937;
+}
+
+/* 로그아웃 버튼 */
+.mypage-btn-logout {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.mypage-btn-logout:hover {
+  background: #d1d5db;
+}
+
+/* =========================
+   모바일 대응
+========================= */
+@media (max-width: 480px) {
+  .mypage-wrapper {
+    padding: 20px 15px;
+  }
+
+  .mypage-card {
+    padding: 20px;
+  }
+
+  .mypage-title {
+    font-size: 18px;
+  }
+
+  .mypage-info {
+    font-size: 13px;
+  }
+}
