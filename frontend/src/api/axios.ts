@@ -19,7 +19,14 @@ export function setAccessToken(token: string | null) {
 // ✅ auth endpoint 판단: startsWith 권장 (url이 상대경로로 들어옴)
 function isAuthEndpoint(url?: string) {
   if (!url) return false;
-  return url.startsWith("/auth/");
+
+  // 🔥 토큰이 필요 없는 엔드포인트만 예외 처리
+  return (
+    url.startsWith("/auth/login") ||
+    url.startsWith("/auth/signup") ||
+    url.startsWith("/auth/refresh") ||
+    url.startsWith("/auth/logout")
+  );
 }
 
 // ✅ Authorization 제거 헬퍼

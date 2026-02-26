@@ -31,7 +31,7 @@ public class AuthController {
                 .httpOnly(true) // JS에서 접근 불가(XSS 방어)
                 .secure(false) // “HTTPS에서만 쿠키 전송” 옵션. 로컬 개발(http) 환경용
                 .sameSite("Lax") // 기본적인 CSRF 방어 + 같은 사이트 요청에선 쿠키 포함
-                .path("/auth") // /auth로 시작하는 요청에만 쿠키 전송(스코프 최소화)
+                .path("/") // /auth로 시작하는 요청에만 쿠키 전송(스코프 최소화)
                 .maxAge(Duration.ofDays(days)) // 쿠키 만료 기간 (refresh token 만료와 맞추는 게 일반적)
                 .build();
     }
@@ -42,7 +42,7 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(false)
                 .sameSite("Lax")
-                .path("/auth")
+                .path("/")
                 .maxAge(0)
                 .build();
     }

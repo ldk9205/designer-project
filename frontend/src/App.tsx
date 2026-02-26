@@ -6,6 +6,8 @@ import HomePage from "./pages/HomePage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SignupPage from "./pages/SignupPage";
 import CommunityPage from "./pages/CommunityPage";
+import UploadPage from "./pages/UploadPage";
+
 
 export default function App() {
   return (
@@ -26,6 +28,9 @@ export default function App() {
           <Route path="*" element={<Navigate to="/home" replace />} />
 
           <Route path="/community" element={<CommunityPage />} />
+
+          {/* 이미지 업로드 페이지 */}
+          <Route path="/upload" element={<UploadPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
