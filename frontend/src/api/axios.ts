@@ -16,11 +16,18 @@ export function setAccessToken(token: string | null) {
   else accessToken = t;
 }
 
-// ✅ auth endpoint 판단: startsWith 권장 (url이 상대경로로 들어옴)
-function isAuthEndpoint(url?: string) {
-  if (!url) return false;
-  return url.startsWith("/auth/");
-}
+// ★ 변경: "토큰을 절대 붙이지 말아야 하는 auth endpoint"만 명시적으로 제외
+const NO_AUTH_ENDPOINTS = [ // ★
+  "/auth/login",  // ★
+  "/auth/signup", // ★
+  "/auth/refresh",// ★
+  "/auth/logout", // ★
+]; // ★
+
+function isNoAuthEndpoint(url?: string) { // ★
+  if (!url) return false; // ★
+  return NO_AUTH_ENDPOINTS.some((p) => url.startsWith(p)); // ★
+} // ★
 
 // ✅ Authorization 제거 헬퍼
 function removeAuthHeader(config: InternalAxiosRequestConfig) {
@@ -34,12 +41,13 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const url = config.url ?? "";
 
   // ✅ 1) /auth/** 요청은 토큰을 절대 붙이지 않는다 (회원가입/로그인/refresh/logout 등)
-  if (isAuthEndpoint(url)) {
+  if (isNoAuthEndpoint(url)) {
     removeAuthHeader(config);
     return config;
   }
 
   // ✅ 2) 그 외 요청은 accessToken이 "정상 값"일 때만 Authorization 붙임
+  //     (★중요) 이제 /auth/me 는 여기로 들어와서 토큰이 붙음
   const t = (accessToken ?? "").trim();
   if (t && t !== "null" && t !== "undefined") {
     config.headers = config.headers ?? ({} as any);
@@ -81,7 +89,7 @@ api.interceptors.response.use(
     if (!original) return Promise.reject(error);
 
     // ✅ 0) /auth/** 자체는 refresh 로직 절대 타지 않음
-    if (isAuthEndpoint(original.url)) {
+    if (isNoAuthEndpoint(original.url)) { // ★
       return Promise.reject(error);
     }
 

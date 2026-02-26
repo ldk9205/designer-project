@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SignupPage from "./pages/SignupPage";
 import CommunityPage from "./pages/CommunityPage";
+import MyPage from "./pages/MyPage";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           {/* 로그인 필요 페이지 */}
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<HomePage />} />
+            <Route path="/mypage" element={<MyPage />} />
           </Route>
 
           {/* 기본 진입 */}
