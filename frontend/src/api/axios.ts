@@ -16,7 +16,7 @@ export function setAccessToken(token: string | null) {
   else accessToken = t;
 }
 
-<<<<<<< HEAD
+
 // ✅ auth endpoint 판단: startsWith 권장 (url이 상대경로로 들어옴)
 function isAuthEndpoint(url?: string) {
   if (!url) return false;
@@ -29,7 +29,7 @@ function isAuthEndpoint(url?: string) {
     url.startsWith("/auth/logout")
   );
 }
-=======
+
 // ★ 변경: "토큰을 절대 붙이지 말아야 하는 auth endpoint"만 명시적으로 제외
 const NO_AUTH_ENDPOINTS = [ // ★
   "/auth/login",  // ★
@@ -42,7 +42,6 @@ function isNoAuthEndpoint(url?: string) { // ★
   if (!url) return false; // ★
   return NO_AUTH_ENDPOINTS.some((p) => url.startsWith(p)); // ★
 } // ★
->>>>>>> origin/main
 
 // ✅ Authorization 제거 헬퍼
 function removeAuthHeader(config: InternalAxiosRequestConfig) {
