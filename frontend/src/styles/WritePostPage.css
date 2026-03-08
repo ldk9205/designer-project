@@ -1,0 +1,72 @@
+.write-wrapper{
+  max-width:700px;
+  margin:50px auto;
+  padding:0 20px;
+}
+
+.write-card{
+  background:white;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  padding:30px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.05);
+}
+
+.write-title{
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:20px;
+}
+
+.write-form{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.write-form input{
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:14px;
+}
+
+.write-form textarea{
+  min-height:180px;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:14px;
+  resize:none;
+}
+
+.write-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+}
+
+.write-actions button{
+  padding:10px 18px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:500;
+}
+
+.submit-btn{
+  background:#6366f1;
+  color:white;
+}
+
+.submit-btn:hover{
+  background:#4f46e5;
+}
+
+.cancel-btn{
+  background:#e5e7eb;
+}
+
+.cancel-btn:hover{
+  background:#d1d5db;
+}

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.designer.board.mapper.PostMapper">
+
+    <select id="findAll" resultType="com.designer.board.dto.PostDto">
+
+        SELECT
+        p.id,
+        p.title,
+        p.content,
+        p.created_at,
+        d.name AS designerName
+
+        FROM board_posts p
+        JOIN designers d
+        ON p.designer_id = d.id
+
+        ORDER BY p.created_at DESC
+
+    </select>
+
+    <select id="findById" resultType="com.designer.board.dto.PostDto">
+
+        SELECT
+        p.id,
+        p.title,
+        p.content,
+        p.created_at,
+        d.name AS designerName
+
+        FROM board_posts p
+        JOIN designers d
+        ON p.designer_id = d.id
+
+        WHERE p.id = #{id}
+
+    </select>
+
+    <insert id="insert" parameterType="com.designer.board.dto.PostDto">
+        INSERT INTO board_posts
+        (designer_id, title, content)
+        VALUES
+        (#{designerId}, #{title}, #{content})
+    </insert>
+
+    <update id="update">
+        UPDATE board_posts
+        SET title = #{title},
+        content = #{content},
+        updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM board_posts
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

@@ -8,7 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan(basePackages = {
         "com.designer.auth.mapper",
         "com.designer.image.mapper",
-        "com.designer.treatment.mapper"
+        "com.designer.treatment.mapper",
+        "com.designer.board.mapper"
 })
 public class DesignerApplication {
     public static void main(String[] args) {

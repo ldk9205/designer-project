@@ -1,36 +1,29 @@
 import { useEffect, useState } from "react";
-import { fetchCommunityList } from "../api/fileApi";
+import { getPosts } from "../api/boardApi";
 import { useNavigate } from "react-router-dom";
+import { formatRelativeTime } from "../utils/time";
 import "../styles/CommunityPage.css";
 
-interface CommunityItem {
-  imageId: number;
-  customerName: string;
-  treatmentDate: string;
-  category: string;
-  styleName: string;
-  presignedUrl: string;
-}
-
 export default function CommunityPage() {
-  const [posts, setPosts] = useState<CommunityItem[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loadCommunity = async () => {
+    const loadPosts = async () => {
       try {
-        const data = await fetchCommunityList();
+        const data = await getPosts();
         setPosts(data);
-      } catch (error) {
-        console.error(error);
-        alert("커뮤니티 목록을 불러오지 못했습니다.");
+      } catch (e) {
+        console.error(e);
+        alert("게시글을 불러오지 못했습니다.");
       } finally {
         setLoading(false);
       }
     };
 
-    loadCommunity();
+    loadPosts();
   }, []);
 
   if (loading) {
@@ -44,25 +37,32 @@ export default function CommunityPage() {
   return (
     <div className="community-wrapper">
       <div className="community-header">
-        <h2>💬 커뮤니티 룸</h2>
-        <button onClick={() => navigate("/home")}>홈으로</button>
+        <h2>💬 커뮤니티</h2>
+
+        <button onClick={() => navigate("/community/write")}>글쓰기</button>
       </div>
 
-      <div className="community-grid">
+      {posts.length === 0 && (
+        <div className="empty-post">올라온 게시물이 없습니다.</div>
+      )}
+
+      <div className="community-list">
         {posts.map((post) => (
-          <div key={post.imageId} className="community-card">
-            <img src={post.presignedUrl} alt={post.styleName} />
+          <div
+            key={post.id}
+            className="community-card"
+            onClick={() => navigate(`/community/${post.id}`)}
+          >
+            <div className="post-title">{post.title}</div>
 
-            <div className="community-info">
-              <div className="customer-name">{post.customerName} 고객님</div>
+            <div className="post-meta">
+              {post.designerName} · {formatRelativeTime(post.createdAt)}
+            </div>
 
-              <div className="treatment-info">
-                {post.treatmentDate} · {post.category}
-              </div>
-
-              {post.styleName && (
-                <div className="style-name">{post.styleName}</div>
-              )}
+            <div className="post-preview">
+              {post.content.length > 80
+                ? post.content.slice(0, 80) + "..."
+                : post.content}
             </div>
           </div>
         ))}
