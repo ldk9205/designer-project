@@ -99,14 +99,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const bootstrap = async () => {
       try {
-        // const res = await api.post("/auth/refresh");
-        // const token = res.data?.accessToken as string;
-
-        // setAccessToken(token);
-        // scheduleProactiveRefresh(token);
-
-        // const me = await meApi();
-        // setDesigner(me);
+        await refreshAndLoadMe();
       } catch {
         setAccessToken(null);
         setDesigner(null);
