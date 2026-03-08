@@ -9,6 +9,8 @@ import CommunityPage from "./pages/CommunityPage";
 import UploadPage from "./pages/UploadPage";
 
 import MyPage from "./pages/MyPage";
+import WritePostPage from "./pages/WritePostPage";
+import PostDetailPage from "./pages/PostDetailPage";
 
 export default function App() {
   return (
@@ -30,6 +32,8 @@ export default function App() {
           <Route path="*" element={<Navigate to="/home" replace />} />
 
           <Route path="/community" element={<CommunityPage />} />
+          <Route path="/community/write" element={<WritePostPage />} />
+          <Route path="/community/:id" element={<PostDetailPage />} />
 
           {/* 이미지 업로드 페이지 */}
           <Route path="/upload" element={<UploadPage />} />

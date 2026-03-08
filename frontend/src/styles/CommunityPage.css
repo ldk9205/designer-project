@@ -1,84 +1,76 @@
-.community-wrapper {
-  width: 100%;
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 20px;
-  font-family: 'Segoe UI', sans-serif;
+.community-wrapper{
+  max-width:900px;
+  margin:40px auto;
+  padding:0 20px;
 }
 
-.community-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
+.community-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
 }
 
-.community-header h2 {
-  font-size: 22px;
-  font-weight: 700;
+.community-header h2{
+  margin:0;
 }
 
-.community-header button {
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: none;
-  background-color: #111827;
-  color: white;
-  cursor: pointer;
-  transition: 0.2s;
+.community-header button{
+  margin-left:10px;
+  padding:8px 14px;
+  border:none;
+  background:#4f46e5;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
 }
 
-.community-header button:hover {
-  opacity: 0.8;
+.community-header button:hover{
+  background:#4338ca;
 }
 
-.loading-text {
-  text-align: center;
-  padding: 80px 0;
+.community-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
 
-/* ===== Grid ===== */
-.community-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 25px;
+.community-card{
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  padding:16px;
+  cursor:pointer;
+  transition:all 0.15s ease;
+  background:white;
 }
 
-/* ===== Card ===== */
-.community-card {
-  background: white;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease;
+.community-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
-.community-card:hover {
-  transform: translateY(-5px);
+.post-title{
+  font-size:18px;
+  font-weight:600;
 }
 
-.community-card img {
-  width: 100%;
-  height: 320px;
-  object-fit: contain;
-  background: #f3f4f6;
+.post-content{
+  margin-top:6px;
+  color:#555;
 }
 
-.community-info {
-  padding: 12px;
-  font-size: 13px;
-  text-align: center;
-  background: #fafafa;
+.post-date{
+  margin-top:10px;
+  font-size:12px;
+  color:#888;
 }
 
-/* ===== 모바일 최적화 ===== */
-@media (max-width: 480px) {
-  .community-wrapper {
-    margin: 20px auto;
-    padding: 15px;
-  }
+.empty-post{
+  text-align:center;
+  padding:50px;
+  color:#888;
+}
 
-  .community-card img {
-    height: 220px;
-  }
+.loading-text{
+  text-align:center;
 }
