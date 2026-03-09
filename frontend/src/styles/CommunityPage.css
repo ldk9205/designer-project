@@ -1,76 +1,115 @@
-.community-wrapper{
-  max-width:900px;
-  margin:40px auto;
-  padding:0 20px;
+.community-wrapper {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
 }
 
-.community-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
+.community-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.community-header h2{
-  margin:0;
+.community-header h2 {
+  margin: 0;
 }
 
-.community-header button{
-  margin-left:10px;
-  padding:8px 14px;
-  border:none;
-  background:#4f46e5;
-  color:white;
-  border-radius:6px;
-  cursor:pointer;
+.community-header button {
+  padding: 8px 14px;
+  border: none;
+  background: #4f46e5;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
 }
 
-.community-header button:hover{
-  background:#4338ca;
+.community-header button:hover {
+  background: #4338ca;
 }
 
-.community-list{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
+.community-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.community-card{
-  border:1px solid #e5e7eb;
-  border-radius:10px;
-  padding:16px;
-  cursor:pointer;
-  transition:all 0.15s ease;
-  background:white;
+.community-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: white;
 }
 
-.community-card:hover{
-  transform:translateY(-2px);
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+.community-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.post-title{
-  font-size:18px;
-  font-weight:600;
+.post-title {
+  font-size: 18px;
+  font-weight: 600;
 }
 
-.post-content{
-  margin-top:6px;
-  color:#555;
+.post-meta {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #6b7280;
 }
 
-.post-date{
-  margin-top:10px;
-  font-size:12px;
-  color:#888;
+.post-preview {
+  margin-top: 8px;
+  color: #444;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
-.empty-post{
-  text-align:center;
-  padding:50px;
-  color:#888;
+.empty-post {
+  text-align: center;
+  padding: 50px;
+  color: #888;
 }
 
-.loading-text{
-  text-align:center;
+.loading-text {
+  text-align: center;
+  padding: 40px;
+}
+
+/* ===========================
+   Pagination
+=========================== */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 30px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #e5e7eb;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.pagination button:hover {
+  background: #d1d5db;
+}
+
+.pagination button:disabled {
+  background: #f3f4f6;
+  cursor: default;
+}
+
+.active-page {
+  background: #4f46e5 !important;
+  color: white;
+  font-weight: 600;
 }

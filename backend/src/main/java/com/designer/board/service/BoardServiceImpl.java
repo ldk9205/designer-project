@@ -1,6 +1,7 @@
 package com.designer.board.service;
 
 import com.designer.board.dto.CommentDto;
+import com.designer.board.dto.PageResponseDto;
 import com.designer.board.dto.PostDto;
 import com.designer.board.mapper.CommentMapper;
 import com.designer.board.mapper.PostMapper;
@@ -23,8 +24,23 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<PostDto> getPosts() {
-        return postMapper.findAll();
+    public PageResponseDto<PostDto> getPosts(int page, int size) {
+
+        int offset = page * size;
+
+        List<PostDto> posts = boardMapper.findPosts(offset, size);
+
+        long total = boardMapper.countPosts();
+
+        PageResponseDto<PostDto> response = new PageResponseDto<>();
+
+        response.setContent(posts);
+        response.setPage(page);
+        response.setSize(size);
+        response.setTotalElements(total);
+        response.setTotalPages((int) Math.ceil((double) total / size));
+
+        return response;
     }
 
     @Override
