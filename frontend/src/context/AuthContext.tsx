@@ -52,7 +52,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   // ★ 추가: refresh(쿠키) → 토큰 세팅 → me 로드 로직을 한 곳으로 통합
-  const refreshAndLoadMe = async () => { // ★
+  const refreshAndLoadMe = async () => {
+    // ★
     const res = await api.post("/auth/refresh"); // ★
     const newToken = res.data?.accessToken as string; // ★
 
@@ -74,7 +75,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   //   setDesigner(me);
   // };
 
-  const forceRefresh = async () => { // ★
+  const forceRefresh = async () => {
+    // ★
     await refreshAndLoadMe(); // ★
   }; // ★
 

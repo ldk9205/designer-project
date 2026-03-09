@@ -65,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtTokenProvider.createToken(authDesigner.getId(), authDesigner.getEmail());
 
         // Refresh (선택: 단일 세션 정책이면 revokeAll)
-        // refreshTokenMapper.revokeAllByDesignerId(authDesigner.getId());
+        refreshTokenMapper.revokeAllByDesignerId(authDesigner.getId());
 
         // Refresh Token 발급 + 저장
         String refreshValue = newRefreshTokenValue();
