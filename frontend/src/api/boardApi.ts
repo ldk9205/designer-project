@@ -11,6 +11,7 @@ import api from "./axios";
 export interface Post {
   id: number;
   designerId: number;
+  designerName?: string;
   title: string;
   content: string;
   createdAt: string;
@@ -21,6 +22,7 @@ export interface Comment {
   id: number;
   postId: number;
   designerId: number;
+  designerName?: string;
   content: string;
   createdAt: string;
   updatedAt?: string;
@@ -28,13 +30,39 @@ export interface Comment {
 
 /**
  * ===============================
- * 게시글 목록 조회
- * GET /board/posts
+ * 페이징 응답 타입
  * ===============================
  */
 
-export const getPosts = async (): Promise<Post[]> => {
-  const res = await api.get<Post[]>("/board/posts");
+export interface PageResponse<T> {
+  content: T[];
+  page: number;
+  size: number;
+  totalPages: number;
+  totalElements: number;
+}
+
+/**
+ * ===============================
+ * 게시글 목록 조회 (페이징)
+ * GET /board/posts?page=&size=
+ * ===============================
+ */
+
+export const getPosts = async ({
+  page,
+  size,
+}: {
+  page: number;
+  size: number;
+}): Promise<PageResponse<Post>> => {
+  const res = await api.get<PageResponse<Post>>("/board/posts", {
+    params: {
+      page,
+      size,
+    },
+  });
+
   return res.data;
 };
 

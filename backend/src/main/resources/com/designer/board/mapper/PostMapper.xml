@@ -5,58 +5,113 @@
 
 <mapper namespace="com.designer.board.mapper.PostMapper">
 
-    <select id="findAll" resultType="com.designer.board.dto.PostDto">
+    <!-- ============================= -->
+    <!-- 게시글 생성 -->
+    <!-- ============================= -->
+
+    <insert id="insert">
+
+        INSERT INTO board_posts (
+        designer_id,
+        title,
+        content,
+        created_at
+        )
+        VALUES (
+        #{designerId},
+        #{title},
+        #{content},
+        NOW()
+        )
+
+    </insert>
+
+
+    <!-- ============================= -->
+    <!-- 게시글 목록 조회 (페이징) -->
+    <!-- ============================= -->
+
+    <select id="findPosts" resultType="com.designer.board.dto.PostDto">
 
         SELECT
         p.id,
+        p.designer_id AS designerId,
+        d.name AS designerName,
         p.title,
         p.content,
-        p.created_at,
-        d.name AS designerName
+        p.created_at AS createdAt
 
         FROM board_posts p
-        JOIN designers d
-        ON p.designer_id = d.id
+        JOIN designers d ON p.designer_id = d.id
 
         ORDER BY p.created_at DESC
 
+        LIMIT #{size}
+        OFFSET #{offset}
+
     </select>
+
+
+    <!-- ============================= -->
+    <!-- 게시글 총 개수 -->
+    <!-- ============================= -->
+
+    <select id="countPosts" resultType="long">
+
+        SELECT COUNT(*)
+        FROM board_posts
+
+    </select>
+
+
+    <!-- ============================= -->
+    <!-- 게시글 단일 조회 -->
+    <!-- ============================= -->
 
     <select id="findById" resultType="com.designer.board.dto.PostDto">
 
         SELECT
         p.id,
+        p.designer_id AS designerId,
+        d.name AS designerName,
         p.title,
         p.content,
-        p.created_at,
-        d.name AS designerName
+        p.created_at AS createdAt,
+        p.updated_at AS updatedAt
 
         FROM board_posts p
-        JOIN designers d
-        ON p.designer_id = d.id
+        JOIN designers d ON p.designer_id = d.id
 
         WHERE p.id = #{id}
 
     </select>
 
-    <insert id="insert" parameterType="com.designer.board.dto.PostDto">
-        INSERT INTO board_posts
-        (designer_id, title, content)
-        VALUES
-        (#{designerId}, #{title}, #{content})
-    </insert>
+
+    <!-- ============================= -->
+    <!-- 게시글 수정 -->
+    <!-- ============================= -->
 
     <update id="update">
+
         UPDATE board_posts
-        SET title = #{title},
+        SET
+        title = #{title},
         content = #{content},
         updated_at = NOW()
         WHERE id = #{id}
+
     </update>
 
+
+    <!-- ============================= -->
+    <!-- 게시글 삭제 -->
+    <!-- ============================= -->
+
     <delete id="delete">
+
         DELETE FROM board_posts
         WHERE id = #{id}
+
     </delete>
 
 </mapper>

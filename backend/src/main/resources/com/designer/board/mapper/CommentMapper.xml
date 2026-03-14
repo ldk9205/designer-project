@@ -5,42 +5,96 @@
 
 <mapper namespace="com.designer.board.mapper.CommentMapper">
 
-    <select id="findByPostId" resultType="com.designer.board.dto.CommentDto">
-        SELECT
-        c.id,
-        c.content,
-        c.created_at,
-        d.name AS designerName
-        FROM board_comments c
-        JOIN designers d
-        ON c.designer_id = d.id
-        WHERE c.post_id = #{postId}
-        ORDER BY c.created_at ASC
-    </select>
 
-    <insert id="insert" parameterType="com.designer.board.dto.CommentDto">
-        INSERT INTO board_comments
-        (post_id, designer_id, content)
-        VALUES
-        (#{postId}, #{designerId}, #{content})
+    <!-- ============================= -->
+    <!-- 댓글 생성 -->
+    <!-- ============================= -->
+
+    <insert id="insert">
+
+        INSERT INTO board_comments (
+        post_id,
+        designer_id,
+        content,
+        created_at
+        )
+        VALUES (
+        #{postId},
+        #{designerId},
+        #{content},
+        NOW()
+        )
+
     </insert>
 
-    <update id="update">
-        UPDATE board_comments
-        SET content = #{content},
-        updated_at = NOW()
-        WHERE id = #{id}
-    </update>
 
-    <delete id="delete">
-        DELETE FROM board_comments
-        WHERE id = #{commentId}
-    </delete>
+    <!-- ============================= -->
+    <!-- 게시글 댓글 조회 -->
+    <!-- ============================= -->
+
+    <select id="findByPostId" resultType="com.designer.board.dto.CommentDto">
+
+        SELECT
+        c.id,
+        c.post_id AS postId,
+        c.designer_id AS designerId,
+        d.name AS designerName,
+        c.content,
+        c.created_at AS createdAt,
+        c.updated_at AS updatedAt
+        FROM board_comments c
+        LEFT JOIN designers d ON c.designer_id = d.id
+        WHERE c.post_id = #{postId}
+        ORDER BY c.created_at ASC
+
+    </select>
+
+
+    <!-- ============================= -->
+    <!-- 댓글 단일 조회 -->
+    <!-- ============================= -->
 
     <select id="findById" resultType="com.designer.board.dto.CommentDto">
-        SELECT *
-        FROM board_comments
+
+        SELECT
+        id,
+        post_id AS postId,
+        designer_id AS designerId,
+        content,
+        created_at AS createdAt,
+        updated_at AS updatedAt
+
+        FROM board_comment
+
         WHERE id = #{id}
+
     </select>
+
+
+    <!-- ============================= -->
+    <!-- 댓글 수정 -->
+    <!-- ============================= -->
+
+    <update id="update">
+
+        UPDATE board_comment
+        SET
+        content = #{content},
+        updated_at = NOW()
+        WHERE id = #{id}
+
+    </update>
+
+
+    <!-- ============================= -->
+    <!-- 댓글 삭제 -->
+    <!-- ============================= -->
+
+    <delete id="delete">
+
+        DELETE FROM board_comment
+        WHERE id = #{id}
+
+    </delete>
 
 </mapper>

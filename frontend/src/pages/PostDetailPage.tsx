@@ -1,45 +1,60 @@
 import { useEffect, useState } from "react";
-import { getPost, getComments, createComment } from "../api/boardApi";
+import {
+  getPost,
+  getComments,
+  createComment,
+  Post,
+  Comment,
+} from "../api/boardApi";
 import { useParams } from "react-router-dom";
 import { formatRelativeTime } from "../utils/time";
 import "../styles/PostDetailPage.css";
 
 export default function PostDetailPage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
-  const [post, setPost] = useState<any>(null);
-  const [comments, setComments] = useState<any[]>([]);
+  const [post, setPost] = useState<Post | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [content, setContent] = useState("");
 
+  const postId = Number(id);
+
   useEffect(() => {
+    if (!id) return;
+
     const load = async () => {
-      const postData = await getPost(Number(id));
+      const postData = await getPost(postId);
       setPost(postData);
 
-      const commentData = await getComments(Number(id));
+      const commentData = await getComments(postId);
       setComments(commentData);
     };
 
     load();
-  }, [id]);
+  }, [id, postId]);
 
   const handleComment = async () => {
     const text = content.trim();
-
     if (!text) return;
 
     setContent("");
 
     await createComment({
-      postId: Number(id),
+      postId,
       content: text,
     });
 
-    const commentData = await getComments(Number(id));
+    const commentData = await getComments(postId);
     setComments(commentData);
   };
 
-  if (!post) return <div>로딩 중...</div>;
+  if (!post) {
+    return (
+      <div className="post-detail-wrapper">
+        <p>로딩 중...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="post-detail-wrapper">
@@ -48,7 +63,7 @@ export default function PostDetailPage() {
         <div className="post-title">{post.title}</div>
 
         <div className="post-meta">
-          {post.designerName} · {formatRelativeTime(post.createdAt)}
+          {post.designerName ?? "익명"} · {formatRelativeTime(post.createdAt)}
         </div>
 
         <div className="post-content">{post.content}</div>
@@ -64,7 +79,7 @@ export default function PostDetailPage() {
           {comments.map((c) => (
             <div key={c.id} className="comment-item">
               <div className="comment-meta">
-                {c.designerName} · {formatRelativeTime(c.createdAt)}
+                {c.designerName ?? "익명"} · {formatRelativeTime(c.createdAt)}
               </div>
 
               <div className="comment-content">{c.content}</div>
