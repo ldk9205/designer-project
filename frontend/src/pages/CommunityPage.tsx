@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { getPosts } from "../api/boardApi";
+import { getPosts, Post } from "../api/boardApi";
 import { useNavigate } from "react-router-dom";
 import { formatRelativeTime } from "../utils/time";
 import "../styles/CommunityPage.css";
 
 export default function CommunityPage() {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [page, setPage] = useState(0);
@@ -15,26 +15,26 @@ export default function CommunityPage() {
 
   const navigate = useNavigate();
 
-  const loadPosts = async () => {
-    try {
-      setLoading(true);
-
-      const data = await getPosts({
-        page,
-        size,
-      });
-
-      setPosts(data.content);
-      setTotalPages(data.totalPages);
-    } catch (e) {
-      console.error(e);
-      alert("게시글을 불러오지 못했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const loadPosts = async () => {
+      try {
+        setLoading(true);
+
+        const data = await getPosts({
+          page,
+          size,
+        });
+
+        setPosts(data.content);
+        setTotalPages(data.totalPages);
+      } catch (e) {
+        console.error(e);
+        alert("게시글을 불러오지 못했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     loadPosts();
   }, [page]);
 

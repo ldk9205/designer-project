@@ -1,9 +1,10 @@
 package com.designer.board.controller;
 
 import com.designer.board.dto.CommentDto;
-import com.designer.board.dto.PostDto;
 import com.designer.board.dto.PageResponseDto;
-import com.designer.board.service.BoardService;
+import com.designer.board.dto.PostDto;
+import com.designer.board.service.post.PostService;
+import com.designer.board.service.comment.CommentService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +17,8 @@ import java.util.List;
 @RequestMapping("/board")
 public class BoardController {
 
-    private final BoardService boardService;
+    private final PostService postService;
+    private final CommentService commentService;
 
     /**
      * ===============================
@@ -29,7 +31,7 @@ public class BoardController {
             @RequestAttribute Long designerId,
             @RequestBody PostDto dto
     ) {
-        boardService.createPost(designerId, dto);
+        postService.createPost(designerId, dto);
     }
 
     /**
@@ -43,7 +45,7 @@ public class BoardController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
     ) {
-        return boardService.getPosts(page, size);
+        return postService.getPosts(page, size);
     }
 
     /**
@@ -54,7 +56,8 @@ public class BoardController {
      */
     @GetMapping("/posts/{id}")
     public PostDto getPost(@PathVariable Long id) {
-        return boardService.getPost(id);
+
+        return postService.getPost(id);
     }
 
     /**
@@ -69,7 +72,8 @@ public class BoardController {
             @PathVariable Long id,
             @RequestBody PostDto dto
     ) {
-        boardService.updatePost(designerId, id, dto);
+
+        postService.updatePost(designerId, id, dto);
     }
 
     /**
@@ -83,7 +87,8 @@ public class BoardController {
             @RequestAttribute Long designerId,
             @PathVariable Long id
     ) {
-        boardService.deletePost(designerId, id);
+
+        postService.deletePost(designerId, id);
     }
 
     /**
@@ -98,7 +103,8 @@ public class BoardController {
             @PathVariable Long postId,
             @RequestBody CommentDto dto
     ) {
-        boardService.createComment(designerId, postId, dto);
+
+        commentService.createComment(designerId, postId, dto);
     }
 
     /**
@@ -109,7 +115,8 @@ public class BoardController {
      */
     @GetMapping("/posts/{postId}/comments")
     public List<CommentDto> getComments(@PathVariable Long postId) {
-        return boardService.getComments(postId);
+
+        return commentService.getComments(postId);
     }
 
     /**
@@ -124,7 +131,8 @@ public class BoardController {
             @PathVariable Long commentId,
             @RequestBody CommentDto dto
     ) {
-        boardService.updateComment(designerId, commentId, dto);
+
+        commentService.updateComment(designerId, commentId, dto);
     }
 
     /**
@@ -138,6 +146,7 @@ public class BoardController {
             @RequestAttribute Long designerId,
             @PathVariable Long commentId
     ) {
-        boardService.deleteComment(designerId, commentId);
+
+        commentService.deleteComment(designerId, commentId);
     }
 }

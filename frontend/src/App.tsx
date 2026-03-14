@@ -25,15 +25,15 @@ export default function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<HomePage />} />
             <Route path="/mypage" element={<MyPage />} />
+
+            <Route path="/community" element={<CommunityPage />} />
+            <Route path="/community/write" element={<WritePostPage />} />
+            <Route path="/community/:id" element={<PostDetailPage />} />
           </Route>
 
           {/* 기본 진입 */}
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="*" element={<Navigate to="/home" replace />} />
-
-          <Route path="/community" element={<CommunityPage />} />
-          <Route path="/community/write" element={<WritePostPage />} />
-          <Route path="/community/:id" element={<PostDetailPage />} />
 
           {/* 이미지 업로드 페이지 */}
           <Route path="/upload" element={<UploadPage />} />

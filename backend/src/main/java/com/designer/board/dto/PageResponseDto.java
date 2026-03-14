@@ -1,6 +1,7 @@
 package com.designer.board.dto;
 
 import lombok.Data;
+
 import java.util.List;
 
 @Data
@@ -15,4 +16,5 @@ public class PageResponseDto<T> {
     private long totalElements;
 
     private int totalPages;
+
 }
