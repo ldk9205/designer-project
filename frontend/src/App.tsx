@@ -1,16 +1,22 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+
 import LoginPage from "./pages/LoginPage";
-import HomePage from "./pages/HomePage";
-import ProtectedRoute from "./routes/ProtectedRoute";
 import SignupPage from "./pages/SignupPage";
+import HomePage from "./pages/HomePage";
+import MyPage from "./pages/MyPage";
 import CommunityPage from "./pages/CommunityPage";
 import UploadPage from "./pages/UploadPage";
-
-import MyPage from "./pages/MyPage";
 import WritePostPage from "./pages/WritePostPage";
 import PostDetailPage from "./pages/PostDetailPage";
+
+import CustomerListPage from "./pages/CustomerListPage";
+import CustomerCreatePage from "./pages/CustomerCreatePage";
+import CustomerDetailPage from "./pages/CustomerDetailPage";
+import CustomerEditPage from "./pages/CustomerEditPage";
+
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 export default function App() {
   return (
@@ -21,22 +27,37 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
 
+          {/* 공개 페이지 */}
+          <Route path="/community" element={<CommunityPage />} />
+          <Route path="/community/:id" element={<PostDetailPage />} />
+
           {/* 로그인 필요 페이지 */}
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<HomePage />} />
             <Route path="/mypage" element={<MyPage />} />
 
-            <Route path="/community" element={<CommunityPage />} />
+            {/* 고객 관리 */}
+            <Route path="/customers" element={<CustomerListPage />} />
+            <Route path="/customers/new" element={<CustomerCreatePage />} />
+            <Route
+              path="/customers/:customerId"
+              element={<CustomerDetailPage />}
+            />
+            <Route
+              path="/customers/:customerId/edit"
+              element={<CustomerEditPage />}
+            />
+
+            {/* 커뮤니티 */}
             <Route path="/community/write" element={<WritePostPage />} />
-            <Route path="/community/:id" element={<PostDetailPage />} />
+
+            {/* 이미지 업로드 */}
+            <Route path="/upload" element={<UploadPage />} />
           </Route>
 
           {/* 기본 진입 */}
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="*" element={<Navigate to="/home" replace />} />
-
-          {/* 이미지 업로드 페이지 */}
-          <Route path="/upload" element={<UploadPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
