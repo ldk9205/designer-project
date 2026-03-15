@@ -1,0 +1,114 @@
+.customer-detail-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1f2937, #111827);
+  font-family: "Segoe UI", sans-serif;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.customer-detail-card {
+  width: 100%;
+  max-width: 600px;
+  padding: 40px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.customer-detail-title {
+  margin-bottom: 5px;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  color: #111827;
+}
+
+.customer-detail-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.customer-detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.customer-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+.customer-detail-row span {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.customer-detail-row strong {
+  color: #111827;
+  font-size: 14px;
+  text-align: right;
+  word-break: break-word;
+}
+
+.customer-detail-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.detail-primary-link,
+.detail-secondary-link {
+  padding: 12px 18px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.detail-primary-link {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.detail-primary-link:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+.detail-secondary-link {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+
+.detail-secondary-link:hover {
+  background-color: #d1d5db;
+  transform: translateY(-2px);
+}
+
+.customer-detail-loading,
+.customer-detail-empty {
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.customer-detail-error {
+  color: #ef4444;
+  font-size: 13px;
+  background: #fee2e2;
+  padding: 10px;
+  border-radius: 8px;
+}

@@ -1,0 +1,132 @@
+.customer-list-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: linear-gradient(135deg, #1f2937, #111827);
+  font-family: "Segoe UI", sans-serif;
+  padding: 40px 24px;
+  box-sizing: border-box;
+}
+
+.customer-list-card {
+  width: 100%;
+  max-width: 1000px;
+  padding: 40px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.customer-list-title {
+  margin-bottom: 5px;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  color: #111827;
+}
+
+.customer-list-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.customer-list-top {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.customer-list-create-link {
+  display: inline-block;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background-color: #3b82f6;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.customer-list-create-link:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+.customer-list-loading,
+.customer-list-empty {
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+  padding: 20px 0;
+}
+
+.customer-list-error {
+  color: #ef4444;
+  font-size: 13px;
+  background: #fee2e2;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.customer-list-table-wrap {
+  overflow-x: auto;
+}
+
+.customer-list-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.customer-list-table th,
+.customer-list-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  font-size: 14px;
+}
+
+.customer-list-table th {
+  background: #f9fafb;
+  color: #374151;
+  font-weight: 700;
+}
+
+.customer-list-table td {
+  color: #111827;
+}
+
+.customer-list-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.customer-list-actions a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.customer-list-actions a:hover {
+  text-decoration: underline;
+}
+
+.customer-list-actions button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  background-color: #ef4444;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.customer-list-actions button:hover {
+  background-color: #dc2626;
+}

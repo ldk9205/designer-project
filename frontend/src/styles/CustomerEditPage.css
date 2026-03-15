@@ -1,0 +1,109 @@
+.customer-edit-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1f2937, #111827);
+  font-family: "Segoe UI", sans-serif;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.customer-edit-card {
+  width: 100%;
+  max-width: 500px;
+  padding: 40px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.customer-edit-title {
+  margin-bottom: 5px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.customer-edit-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+.customer-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.customer-edit-input-group {
+  text-align: left;
+}
+
+.customer-edit-input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.customer-edit-input-group input,
+.customer-edit-input-group textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.customer-edit-input-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.customer-edit-input-group input:focus,
+.customer-edit-input-group textarea:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.customer-edit-form button {
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.customer-edit-form button:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+.customer-edit-form button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.customer-edit-error {
+  color: #ef4444;
+  font-size: 13px;
+  background: #fee2e2;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.customer-edit-loading {
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
