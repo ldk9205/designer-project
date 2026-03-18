@@ -8,12 +8,13 @@ export default function CustomerListPage() {
   const [customers, setCustomers] = useState<CustomerResponseDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchName, setSearchName] = useState("");
 
-  const loadCustomers = async () => {
+  const loadCustomers = async (name?: string) => {
     try {
       setLoading(true);
       setError("");
-      const data = await getCustomersApi();
+      const data = await getCustomersApi(name);
       setCustomers(data);
     } catch (err: any) {
       setError(err?.response?.data?.message || err?.message || "고객 목록 조회 실패");
@@ -22,9 +23,20 @@ export default function CustomerListPage() {
     }
   };
 
+  // 처음 진입 시 전체 목록 조회
   useEffect(() => {
     void loadCustomers();
   }, []);
+
+  const onSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await loadCustomers(searchName);
+  };
+
+  const onReset = async () => {
+    setSearchName("");
+    await loadCustomers();
+  };
 
   const onDelete = async (customerId: number) => {
     const ok = window.confirm("정말 삭제하시겠습니까?");
@@ -32,6 +44,8 @@ export default function CustomerListPage() {
 
     try {
       await deleteCustomerApi(customerId);
+
+      // 삭제 후 현재 화면 목록에서만 제거
       setCustomers((prev) => prev.filter((c) => c.id !== customerId));
     } catch (err: any) {
       alert(err?.response?.data?.message || err?.message || "고객 삭제 실패");
@@ -49,6 +63,26 @@ export default function CustomerListPage() {
             고객 등록
           </Link>
         </div>
+
+        <form className="customer-list-search" onSubmit={onSearch}>
+          <input
+            type="text"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            placeholder="고객 이름 검색"
+            className="customer-list-search-input"
+          />
+          <button type="submit" className="customer-list-search-button">
+            검색
+          </button>
+          <button
+            type="button"
+            className="customer-list-reset-button"
+            onClick={onReset}
+          >
+            전체보기
+          </button>
+        </form>
 
         {loading && <div className="customer-list-loading">불러오는 중...</div>}
         {error && <div className="customer-list-error">{error}</div>}
@@ -72,12 +106,20 @@ export default function CustomerListPage() {
                 {customers.map((customer) => (
                   <tr key={customer.id}>
                     <td>{customer.id}</td>
-                    <td>{customer.name}</td>
+
+                    <td>
+                      <Link
+                        to={`/customers/${customer.id}`}
+                        className="customer-name-link"
+                      >
+                        {customer.name}
+                      </Link>
+                    </td>
+
                     <td>{customer.phone || "-"}</td>
+
                     <td>
                       <div className="customer-list-actions">
-                        <Link to={`/customers/${customer.id}`}>상세</Link>
-                        <Link to={`/customers/${customer.id}/edit`}>수정</Link>
                         <button onClick={() => onDelete(customer.id)}>삭제</button>
                       </div>
                     </td>
