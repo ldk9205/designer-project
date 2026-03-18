@@ -1,40 +1,46 @@
 import api from "./axios";
 import type {
   CustomerCreateRequestDto,
-  CustomerResponseDto,
   CustomerUpdateRequestDto,
+  CustomerResponseDto,
 } from "../types/customer";
 
-export async function createCustomerApi(
+// 고객 등록
+export const createCustomerApi = async (
   payload: CustomerCreateRequestDto
-): Promise<CustomerResponseDto> {
-  const res = await api.post<CustomerResponseDto>("/customers", payload);
-  return res.data;
-}
+): Promise<CustomerResponseDto> => {
+  const response = await api.post("/customers", payload);
+  return response.data;
+};
 
-export async function getCustomersApi(): Promise<CustomerResponseDto[]> {
-  const res = await api.get<CustomerResponseDto[]>("/customers");
-  return res.data;
-}
+// 고객 목록 조회 + 이름 검색
+export const getCustomersApi = async (
+  name?: string
+): Promise<CustomerResponseDto[]> => {
+  const response = await api.get("/customers", {
+    params: name ? { name } : {},
+  });
+  return response.data;
+};
 
-export async function getCustomerApi(
+// 고객 단건 조회
+export const getCustomerApi = async (
   customerId: number
-): Promise<CustomerResponseDto> {
-  const res = await api.get<CustomerResponseDto>(`/customers/${customerId}`);
-  return res.data;
-}
+): Promise<CustomerResponseDto> => {
+  const response = await api.get(`/customers/${customerId}`);
+  return response.data;
+};
 
-export async function updateCustomerApi(
+// 고객 수정
+export const updateCustomerApi = async (
   customerId: number,
   payload: CustomerUpdateRequestDto
-): Promise<CustomerResponseDto> {
-  const res = await api.patch<CustomerResponseDto>(
-    `/customers/${customerId}`,
-    payload
-  );
-  return res.data;
-}
+): Promise<CustomerResponseDto> => {
+  const response = await api.patch(`/customers/${customerId}`, payload);
+  return response.data;
+};
 
-export async function deleteCustomerApi(customerId: number): Promise<void> {
+// 고객 삭제
+export const deleteCustomerApi = async (customerId: number): Promise<void> => {
   await api.delete(`/customers/${customerId}`);
-}
+};

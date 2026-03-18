@@ -29,12 +29,15 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    // 내 고객 목록 조회
+    // 내 고객 목록 조회 + 이름 검색
+    // - /customers          -> 전체 목록
+    // - /customers?name=김   -> 이름에 '김'이 포함된 고객 목록
     @GetMapping
     public ResponseEntity<List<CustomerResponseDto>> list(
-            @RequestAttribute("designerId") Long designerId
+            @RequestAttribute("designerId") Long designerId,
+            @RequestParam(required = false) String name
     ) {
-        return ResponseEntity.ok(customerService.getCustomers(designerId));
+        return ResponseEntity.ok(customerService.getCustomers(designerId, name));
     }
 
     // 내 고객 단일 조회
@@ -65,5 +68,4 @@ public class CustomerController {
         customerService.deleteCustomer(designerId, customerId);
         return ResponseEntity.noContent().build();
     }
-
 }

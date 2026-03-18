@@ -21,7 +21,7 @@ public class CustomerServiceImpl implements CustomerService {
     // 고객 등록
     // 1. insert 수행
     // 2. generated key가 dto.id에 세팅됨
-    // 3. 방금 생성된 고객을 다시 조회해서 응답 DTO 반환.
+    // 3. 방금 생성된 고객을 다시 조회해서 응답 DTO 반환
     @Override
     public CustomerResponseDto createCustomer(Long designerId, CustomerCreateRequestDto dto) {
         customerMapper.insertCustomer(designerId, dto);
@@ -36,11 +36,18 @@ public class CustomerServiceImpl implements CustomerService {
         return created;
     }
 
-    // 내 고객 목록 조회
+    // 내 고객 목록 조회 + 이름 검색
     @Override
     @Transactional(readOnly = true)
-    public List<CustomerResponseDto> getCustomers(Long designerId) {
-        return customerMapper.selectCustomersByDesignerId(designerId);
+    public List<CustomerResponseDto> getCustomers(Long designerId, String name) {
+        String keyword = (name == null) ? null : name.trim();
+
+        // 검색어가 null 또는 공백뿐이면 전체 목록 조회로 처리
+        if (keyword != null && keyword.isEmpty()) {
+            keyword = null;
+        }
+
+        return customerMapper.selectCustomersByDesignerIdAndName(designerId, keyword);
     }
 
     // 내 고객 단건 조회
@@ -92,5 +99,4 @@ public class CustomerServiceImpl implements CustomerService {
             throw new CustomerNotFoundException(customerId);
         }
     }
-
 }
