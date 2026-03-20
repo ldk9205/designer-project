@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.designer.treatment.mapper.TreatmentMapper">
+
+    <resultMap id="TreatmentDtoMap" type="com.designer.treatment.dto.TreatmentDto">
+        <id property="id" column="id"/>
+        <result property="designerId" column="designer_id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="treatmentDate" column="treatment_date"/>
+        <result property="treatmentTime" column="treatment_time"/>
+        <result property="category" column="category"/>
+        <result property="styleName" column="style_name"/>
+        <result property="detail" column="detail"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <!-- 소유권 체크용 -->
+    <select id="findDesignerIdByTreatmentId" resultType="long">
+        SELECT designer_id
+        FROM treatments
+        WHERE id = #{treatmentId}
+    </select>
+
+    <!-- treatment 단건 조회 -->
+    <select id="findById" resultMap="TreatmentDtoMap">
+        SELECT
+        id,
+        designer_id,
+        customer_id,
+        treatment_date,
+        treatment_time,
+        category,
+        style_name,
+        detail,
+        created_at,
+        updated_at
+        FROM treatments
+        WHERE id = #{id}
+    </select>
+
+    <!-- 특정 고객의 특정 디자이너 시술 목록 -->
+    <select id="findByCustomerIdAndDesignerId" resultMap="TreatmentDtoMap">
+        SELECT
+        id,
+        designer_id,
+        customer_id,
+        treatment_date,
+        treatment_time,
+        category,
+        style_name,
+        detail,
+        created_at,
+        updated_at
+        FROM treatments
+        WHERE customer_id = #{customerId}
+        AND designer_id = #{designerId}
+        ORDER BY treatment_date DESC, treatment_time DESC, id DESC
+    </select>
+
+    <!-- treatment 등록 -->
+    <insert id="insertTreatment"
+            parameterType="com.designer.treatment.dto.TreatmentDto"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO treatments (
+        designer_id,
+        customer_id,
+        treatment_date,
+        treatment_time,
+        category,
+        style_name,
+        detail
+        ) VALUES (
+        #{designerId},
+        #{customerId},
+        #{treatmentDate},
+        #{treatmentTime},
+        #{category},
+        #{styleName},
+        #{detail}
+        )
+    </insert>
+
+    <!-- treatment 삭제 -->
+    <delete id="deleteById">
+        DELETE FROM treatments
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

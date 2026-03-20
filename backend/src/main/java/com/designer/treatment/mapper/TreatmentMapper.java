@@ -20,9 +20,12 @@ public interface TreatmentMapper {
     TreatmentDto findById(@Param("id") Long id);
 
     /**
-     * 특정 고객의 treatment 목록 조회
+     * 특정 고객의 특정 디자이너 treatment 목록 조회
      */
-    List<TreatmentDto> findByCustomerId(@Param("customerId") Long customerId);
+    List<TreatmentDto> findByCustomerIdAndDesignerId(
+            @Param("customerId") Long customerId,
+            @Param("designerId") Long designerId
+    );
 
     /**
      * treatment 등록

@@ -1,0 +1,72 @@
+.treatment-create-page {
+  padding: 24px;
+}
+
+.treatment-create-card {
+  max-width: 720px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.treatment-create-header {
+  margin-bottom: 20px;
+}
+
+.treatment-create-title {
+  margin: 0;
+  font-size: 28px;
+}
+
+.treatment-create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.treatment-create-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.treatment-create-field input,
+.treatment-create-field textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.treatment-create-field textarea {
+  resize: vertical;
+}
+
+.treatment-create-error {
+  color: #dc2626;
+  font-size: 14px;
+}
+
+.treatment-create-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.treatment-create-cancel,
+.treatment-create-submit {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.treatment-create-submit {
+  background: #111827;
+  color: #fff;
+  border-color: #111827;
+}
