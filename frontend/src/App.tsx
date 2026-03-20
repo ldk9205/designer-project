@@ -16,6 +16,10 @@ import CustomerCreatePage from "./pages/CustomerCreatePage";
 import CustomerDetailPage from "./pages/CustomerDetailPage";
 import CustomerEditPage from "./pages/CustomerEditPage";
 
+import CustomerTreatmentListPage from "./pages/CustomerTreatmentListPage";
+import TreatmentCreatePage from "./pages/TreatmentCreatePage";
+import TreatmentDetailPage from "./pages/TreatmentDetailPage";
+
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 export default function App() {
@@ -46,6 +50,18 @@ export default function App() {
             <Route
               path="/customers/:customerId/edit"
               element={<CustomerEditPage />}
+            />
+            <Route
+              path="/customers/:customerId/treatments"
+              element={<CustomerTreatmentListPage />}
+            />
+            <Route
+              path="/customers/:customerId/treatments/new"
+              element={<TreatmentCreatePage />}
+            />
+            <Route
+              path="/treatments/:treatmentId"
+              element={<TreatmentDetailPage />}
             />
 
             {/* 커뮤니티 */}

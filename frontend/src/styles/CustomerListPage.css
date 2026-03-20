@@ -159,3 +159,19 @@
   border-radius: 8px;
   cursor: pointer;
 }
+
+.customer-list-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.customer-list-history-link {
+  display: inline-block;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #333;
+  background: #fff;
+}

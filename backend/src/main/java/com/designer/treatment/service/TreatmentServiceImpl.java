@@ -1,8 +1,11 @@
 package com.designer.treatment.service;
 
 import com.designer.image.dto.ImageResponseDto;
-import com.designer.image.service.ImageServiceImpl;
-import com.designer.treatment.dto.*;
+import com.designer.image.service.ImageService;
+import com.designer.treatment.dto.TreatmentCreateRequestDto;
+import com.designer.treatment.dto.TreatmentDetailResponseDto;
+import com.designer.treatment.dto.TreatmentDto;
+import com.designer.treatment.dto.TreatmentResponseDto;
 import com.designer.treatment.mapper.TreatmentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,18 +15,18 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TreatmentServiceImpl implements TreatmentService{
+public class TreatmentServiceImpl implements TreatmentService {
 
     private final TreatmentMapper treatmentMapper;
-    private final ImageServiceImpl imageServiceImpl;
+    private final ImageService imageService;
 
-    // 🔹 시술 등록
+    // 시술 등록
+    @Override
     @Transactional
     public void createTreatment(
             TreatmentCreateRequestDto request,
             Long designerId
     ) {
-
         TreatmentDto treatment = new TreatmentDto();
         treatment.setDesignerId(designerId);
         treatment.setCustomerId(request.getCustomerId());
@@ -36,18 +39,17 @@ public class TreatmentServiceImpl implements TreatmentService{
         treatmentMapper.insertTreatment(treatment);
     }
 
-    // 🔹 고객별 목록
+    // 고객별 목록
+    @Override
     @Transactional(readOnly = true)
     public List<TreatmentResponseDto> getTreatmentsByCustomer(
             Long customerId,
             Long designerId
     ) {
-
         List<TreatmentDto> treatments =
-                treatmentMapper.findByCustomerId(customerId);
+                treatmentMapper.findByCustomerIdAndDesignerId(customerId, designerId);
 
         return treatments.stream()
-                .filter(t -> t.getDesignerId().equals(designerId))
                 .map(t -> TreatmentResponseDto.builder()
                         .id(t.getId())
                         .treatmentDate(t.getTreatmentDate())
@@ -59,15 +61,14 @@ public class TreatmentServiceImpl implements TreatmentService{
                 .toList();
     }
 
-    // 🔹 상세 조회 (+ image 포함)
+    // 상세 조회 (+ image 포함)
+    @Override
     @Transactional(readOnly = true)
     public TreatmentDetailResponseDto getTreatmentDetail(
             Long treatmentId,
             Long designerId
     ) {
-
-        TreatmentDto treatment =
-                treatmentMapper.findById(treatmentId);
+        TreatmentDto treatment = treatmentMapper.findById(treatmentId);
 
         if (treatment == null) {
             throw new IllegalArgumentException("존재하지 않는 시술입니다.");
@@ -78,10 +79,7 @@ public class TreatmentServiceImpl implements TreatmentService{
         }
 
         List<ImageResponseDto> images =
-                imageServiceImpl.getImagesByTreatmentId(
-                        treatmentId,
-                        designerId
-                );
+                imageService.getImagesByTreatmentId(treatmentId, designerId);
 
         return TreatmentDetailResponseDto.builder()
                 .id(treatment.getId())
@@ -97,13 +95,13 @@ public class TreatmentServiceImpl implements TreatmentService{
                 .build();
     }
 
-    // 🔹 삭제
+    // 삭제
+    @Override
     @Transactional
     public void deleteTreatment(
             Long treatmentId,
             Long designerId
     ) {
-
         Long ownerDesignerId =
                 treatmentMapper.findDesignerIdByTreatmentId(treatmentId);
 

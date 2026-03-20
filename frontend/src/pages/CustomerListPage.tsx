@@ -120,6 +120,13 @@ export default function CustomerListPage() {
 
                     <td>
                       <div className="customer-list-actions">
+                        <Link
+                          to={`/customers/${customer.id}/treatments`}
+                          className="customer-list-history-link"
+                        >
+                          고객 이력
+                        </Link>
+
                         <button onClick={() => onDelete(customer.id)}>삭제</button>
                       </div>
                     </td>
