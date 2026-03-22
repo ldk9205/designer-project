@@ -6,6 +6,7 @@ import com.designer.treatment.dto.TreatmentCreateRequestDto;
 import com.designer.treatment.dto.TreatmentDetailResponseDto;
 import com.designer.treatment.dto.TreatmentDto;
 import com.designer.treatment.dto.TreatmentResponseDto;
+import com.designer.treatment.dto.TreatmentUpdateRequestDto;
 import com.designer.treatment.mapper.TreatmentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,34 +21,26 @@ public class TreatmentServiceImpl implements TreatmentService {
     private final TreatmentMapper treatmentMapper;
     private final ImageService imageService;
 
-    // 시술 등록
     @Override
     @Transactional
-    public void createTreatment(
-            TreatmentCreateRequestDto request,
-            Long designerId
-    ) {
+    public void createTreatment(Long designerId, TreatmentCreateRequestDto dto) {
         TreatmentDto treatment = new TreatmentDto();
         treatment.setDesignerId(designerId);
-        treatment.setCustomerId(request.getCustomerId());
-        treatment.setTreatmentDate(request.getTreatmentDate());
-        treatment.setTreatmentTime(request.getTreatmentTime());
-        treatment.setCategory(request.getCategory());
-        treatment.setStyleName(request.getStyleName());
-        treatment.setDetail(request.getDetail());
+        treatment.setCustomerId(dto.getCustomerId());
+        treatment.setTreatmentDate(dto.getTreatmentDate());
+        treatment.setTreatmentTime(dto.getTreatmentTime());
+        treatment.setCategory(dto.getCategory());
+        treatment.setStyleName(dto.getStyleName());
+        treatment.setDetail(dto.getDetail());
 
         treatmentMapper.insertTreatment(treatment);
     }
 
-    // 고객별 목록
     @Override
     @Transactional(readOnly = true)
-    public List<TreatmentResponseDto> getTreatmentsByCustomer(
-            Long customerId,
-            Long designerId
-    ) {
+    public List<TreatmentResponseDto> getTreatmentsByCustomer(Long designerId, Long customerId) {
         List<TreatmentDto> treatments =
-                treatmentMapper.findByCustomerIdAndDesignerId(customerId, designerId);
+                treatmentMapper.selectTreatmentsByCustomerIdAndDesignerId(customerId, designerId);
 
         return treatments.stream()
                 .map(t -> TreatmentResponseDto.builder()
@@ -56,26 +49,18 @@ public class TreatmentServiceImpl implements TreatmentService {
                         .treatmentTime(t.getTreatmentTime())
                         .category(t.getCategory())
                         .styleName(t.getStyleName())
-                        .build()
-                )
+                        .build())
                 .toList();
     }
 
-    // 상세 조회 (+ image 포함)
     @Override
     @Transactional(readOnly = true)
-    public TreatmentDetailResponseDto getTreatmentDetail(
-            Long treatmentId,
-            Long designerId
-    ) {
-        TreatmentDto treatment = treatmentMapper.findById(treatmentId);
+    public TreatmentDetailResponseDto getTreatmentDetail(Long designerId, Long treatmentId) {
+        TreatmentDto treatment =
+                treatmentMapper.selectTreatmentByIdAndDesignerId(treatmentId, designerId);
 
         if (treatment == null) {
-            throw new IllegalArgumentException("존재하지 않는 시술입니다.");
-        }
-
-        if (!treatment.getDesignerId().equals(designerId)) {
-            throw new SecurityException("접근 권한이 없습니다.");
+            throw new IllegalArgumentException("해당 시술 이력을 찾을 수 없습니다.");
         }
 
         List<ImageResponseDto> images =
@@ -95,24 +80,41 @@ public class TreatmentServiceImpl implements TreatmentService {
                 .build();
     }
 
-    // 삭제
     @Override
     @Transactional
-    public void deleteTreatment(
-            Long treatmentId,
-            Long designerId
-    ) {
-        Long ownerDesignerId =
-                treatmentMapper.findDesignerIdByTreatmentId(treatmentId);
+    public void updateTreatment(Long designerId, Long treatmentId, TreatmentUpdateRequestDto dto) {
+        TreatmentDto existing =
+                treatmentMapper.selectTreatmentByIdAndDesignerId(treatmentId, designerId);
 
-        if (ownerDesignerId == null) {
-            throw new IllegalArgumentException("존재하지 않는 시술입니다.");
+        if (existing == null) {
+            throw new IllegalArgumentException("해당 시술 이력을 찾을 수 없습니다.");
         }
 
-        if (!ownerDesignerId.equals(designerId)) {
-            throw new SecurityException("삭제 권한이 없습니다.");
+        boolean hasNoChanges =
+                dto.getTreatmentDate() == null &&
+                        dto.getTreatmentTime() == null &&
+                        dto.getCategory() == null &&
+                        dto.getStyleName() == null &&
+                        dto.getDetail() == null;
+
+        if (hasNoChanges) {
+            throw new IllegalArgumentException("수정할 내용이 없습니다.");
         }
 
-        treatmentMapper.deleteById(treatmentId);
+        int updated = treatmentMapper.updateTreatmentByIdAndDesignerId(treatmentId, designerId, dto);
+
+        if (updated == 0) {
+            throw new IllegalStateException("시술 이력 수정에 실패했습니다.");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteTreatment(Long designerId, Long treatmentId) {
+        int deleted = treatmentMapper.deleteTreatmentByIdAndDesignerId(treatmentId, designerId);
+
+        if (deleted == 0) {
+            throw new IllegalArgumentException("해당 시술 이력을 찾을 수 없습니다.");
+        }
     }
 }

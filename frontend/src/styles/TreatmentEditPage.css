@@ -1,0 +1,82 @@
+.treatment-edit-page {
+  min-height: 100vh;
+  padding: 24px;
+  background: #f7f8fa;
+}
+
+.treatment-edit-card {
+  max-width: 720px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.treatment-edit-header {
+  margin-bottom: 20px;
+}
+
+.treatment-edit-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.treatment-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.treatment-edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.treatment-edit-field input,
+.treatment-edit-field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d8dde6;
+  border-radius: 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.treatment-edit-error {
+  color: #d93025;
+  font-size: 14px;
+}
+
+.treatment-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.treatment-edit-cancel,
+.treatment-edit-submit {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.treatment-edit-cancel {
+  background:#374151;;
+}
+
+.treatment-edit-submit {
+  background: #111827;
+  color: #ffffff;
+}
+
+.treatment-edit-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
