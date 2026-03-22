@@ -3,6 +3,7 @@ import type {
   TreatmentCreateRequestDto,
   TreatmentDetailResponseDto,
   TreatmentResponseDto,
+  TreatmentUpdateRequestDto,
 } from "../types/treatment";
 
 // 시술 등록
@@ -26,6 +27,14 @@ export const getTreatmentDetailApi = async (
 ): Promise<TreatmentDetailResponseDto> => {
   const response = await api.get(`/treatments/${treatmentId}`);
   return response.data;
+};
+
+// 시술 수정 (PATCH)
+export const updateTreatmentApi = async (
+  treatmentId: number,
+  payload: TreatmentUpdateRequestDto
+): Promise<void> => {
+  await api.patch(`/treatments/${treatmentId}`, payload);
 };
 
 // 시술 삭제

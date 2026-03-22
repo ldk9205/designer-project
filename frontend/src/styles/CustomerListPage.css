@@ -175,3 +175,22 @@
   color: #333;
   background: #fff;
 }
+
+.customer-list-top-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.customer-list-home-link,
+.customer-list-create-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+}

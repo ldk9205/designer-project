@@ -59,9 +59,15 @@ export default function CustomerListPage() {
         <p className="customer-list-subtitle">등록된 고객을 확인하고 관리하세요</p>
 
         <div className="customer-list-top">
-          <Link to="/customers/new" className="customer-list-create-link">
-            고객 등록
-          </Link>
+          <div className="customer-list-top-actions">
+            <Link to="/home" className="customer-list-home-link">
+              홈으로
+            </Link>
+
+            <Link to="/customers/new" className="customer-list-create-link">
+              고객 등록
+            </Link>
+          </div>
         </div>
 
         <form className="customer-list-search" onSubmit={onSearch}>

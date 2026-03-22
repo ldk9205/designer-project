@@ -3,40 +3,19 @@ package com.designer.treatment.service;
 import com.designer.treatment.dto.TreatmentCreateRequestDto;
 import com.designer.treatment.dto.TreatmentDetailResponseDto;
 import com.designer.treatment.dto.TreatmentResponseDto;
+import com.designer.treatment.dto.TreatmentUpdateRequestDto;
 
 import java.util.List;
 
 public interface TreatmentService {
 
-    /**
-     * 시술 등록
-     */
-    void createTreatment(
-            TreatmentCreateRequestDto request,
-            Long designerId
-    );
+    void createTreatment(Long designerId, TreatmentCreateRequestDto dto);
 
-    /**
-     * 고객별 시술 목록 조회
-     */
-    List<TreatmentResponseDto> getTreatmentsByCustomer(
-            Long customerId,
-            Long designerId
-    );
+    List<TreatmentResponseDto> getTreatmentsByCustomer(Long designerId, Long customerId);
 
-    /**
-     * 시술 상세 조회 (이미지 포함)
-     */
-    TreatmentDetailResponseDto getTreatmentDetail(
-            Long treatmentId,
-            Long designerId
-    );
+    TreatmentDetailResponseDto getTreatmentDetail(Long designerId, Long treatmentId);
 
-    /**
-     * 시술 삭제
-     */
-    void deleteTreatment(
-            Long treatmentId,
-            Long designerId
-    );
+    void updateTreatment(Long designerId, Long treatmentId, TreatmentUpdateRequestDto dto);
+
+    void deleteTreatment(Long designerId, Long treatmentId);
 }

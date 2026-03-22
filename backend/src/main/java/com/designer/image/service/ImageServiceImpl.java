@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import com.designer.image.dto.CommunityResponseDto;
-import java.util.Map;
 
+import java.util.Map;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ImageServiceImpl implements ImageService{
+public class ImageServiceImpl implements ImageService {
 
     private final ImageMapper imageMapper;
     private final TreatmentMapper treatmentMapper;
@@ -34,15 +34,8 @@ public class ImageServiceImpl implements ImageService{
     ) {
 
         // 1️⃣ treatment 존재 및 소유권 확인
-        Long ownerDesignerId =
-                treatmentMapper.findDesignerIdByTreatmentId(treatmentId);
-
-        if (ownerDesignerId == null) {
-            throw new IllegalArgumentException("존재하지 않는 시술입니다.");
-        }
-
-        if (!ownerDesignerId.equals(designerId)) {
-            throw new SecurityException("본인의 시술만 업로드할 수 있습니다.");
+        if (treatmentMapper.selectTreatmentByIdAndDesignerId(treatmentId, designerId) == null) {
+            throw new IllegalArgumentException("존재하지 않는 시술이거나 본인 소유의 시술이 아닙니다.");
         }
 
         // 2️⃣ S3 key 생성
@@ -75,7 +68,6 @@ public class ImageServiceImpl implements ImageService{
         }
     }
 
-
     /**
      * 특정 시술 이미지 목록 조회
      */
@@ -86,15 +78,8 @@ public class ImageServiceImpl implements ImageService{
     ) {
 
         // 1️⃣ 소유권 체크
-        Long ownerDesignerId =
-                treatmentMapper.findDesignerIdByTreatmentId(treatmentId);
-
-        if (ownerDesignerId == null) {
-            throw new IllegalArgumentException("존재하지 않는 시술입니다.");
-        }
-
-        if (!ownerDesignerId.equals(designerId)) {
-            throw new SecurityException("접근 권한이 없습니다.");
+        if (treatmentMapper.selectTreatmentByIdAndDesignerId(treatmentId, designerId) == null) {
+            throw new IllegalArgumentException("존재하지 않는 시술이거나 접근 권한이 없습니다.");
         }
 
         // 2️⃣ DB 조회
@@ -133,10 +118,7 @@ public class ImageServiceImpl implements ImageService{
         }
 
         // 2️⃣ 소유권 확인
-        Long ownerDesignerId =
-                treatmentMapper.findDesignerIdByTreatmentId(imageDto.getTreatmentId());
-
-        if (!ownerDesignerId.equals(designerId)) {
+        if (treatmentMapper.selectTreatmentByIdAndDesignerId(imageDto.getTreatmentId(), designerId) == null) {
             throw new SecurityException("삭제 권한이 없습니다.");
         }
 
@@ -214,4 +196,3 @@ public class ImageServiceImpl implements ImageService{
                 .toList();
     }
 }
-

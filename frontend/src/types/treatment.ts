@@ -7,6 +7,14 @@ export type TreatmentCreateRequestDto = {
   detail?: string;
 };
 
+export type TreatmentUpdateRequestDto = {
+  treatmentDate?: string;
+  treatmentTime?: string;
+  category?: string;
+  styleName?: string;
+  detail?: string;
+};
+
 export type TreatmentResponseDto = {
   id: number;
   treatmentDate: string;

@@ -1,58 +1,84 @@
 .customer-treatment-page {
+  min-height: 100vh;
   padding: 24px;
+  background: #f7f8fa;
 }
 
 .customer-treatment-card {
   max-width: 1100px;
   margin: 0 auto;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 12px;
+  background: #ffffff;
+  border-radius: 16px;
   padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .customer-treatment-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
   margin-bottom: 20px;
 }
 
 .customer-treatment-title {
   margin: 0;
   font-size: 28px;
+  font-weight: 700;
 }
 
+.customer-treatment-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* =========================
+   링크 버튼 (홈 / 목록)
+========================= */
+.customer-treatment-home-link,
 .customer-treatment-back-link {
   text-decoration: none;
-  color: #2563eb;
-  font-weight: 600;
-}
-
-.customer-treatment-customer-info {
-  margin-bottom: 20px;
-  padding: 16px;
-  border: 1px solid #eee;
-  border-radius: 10px;
-  background: #fafafa;
-}
-
-.customer-treatment-top {
-  margin-bottom: 16px;
-}
-
-.customer-treatment-create-link {
-  display: inline-block;
   padding: 10px 14px;
-  border-radius: 8px;
-  text-decoration: none;
-  background: #111827;
-  color: #fff;
-  font-weight: 600;
+  border-radius: 10px;
+  background: #e5e7eb;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s ease;
 }
 
-.customer-treatment-table-wrap {
-  overflow-x: auto;
+.customer-treatment-home-link:hover,
+.customer-treatment-back-link:hover {
+  background: #d1d5db;
+}
+
+/* =========================
+   시술 등록 버튼 (Primary Dark)
+========================= */
+.customer-treatment-create-button {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: #111827;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.customer-treatment-create-button:hover {
+  background: #1f2937;
+}
+
+/* =========================
+   테이블
+========================= */
+.customer-treatment-empty {
+  padding: 40px 0;
+  text-align: center;
+  color: #6b7280;
 }
 
 .customer-treatment-table {
@@ -62,19 +88,87 @@
 
 .customer-treatment-table th,
 .customer-treatment-table td {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
+  padding: 14px 12px;
+  border-bottom: 1px solid #eceff3;
   text-align: left;
+  vertical-align: middle;
 }
 
-.customer-treatment-detail-link {
-  color: #2563eb;
-  text-decoration: none;
+.customer-treatment-table th {
+  background: #f9fafb;
   font-weight: 600;
+  color: #374151;
 }
 
-.customer-treatment-loading,
-.customer-treatment-error,
-.customer-treatment-empty {
-  padding: 20px 0;
+.customer-treatment-row-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* =========================
+   상세 이력 버튼 (Primary Blue)
+========================= */
+.customer-treatment-detail-button {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  background: #2563eb;
+  color: #ffffff;
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+.customer-treatment-detail-button:hover {
+  background: #1d4ed8;
+}
+
+.customer-treatment-detail-button:active {
+  transform: scale(0.97);
+}
+
+/* =========================
+   삭제 버튼 (Danger Red)
+========================= */
+.customer-treatment-delete-button {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  background: #dc2626;
+  color: #ffffff;
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+.customer-treatment-delete-button:hover {
+  background: #b91c1c;
+}
+
+.customer-treatment-delete-button:active {
+  transform: scale(0.97);
+}
+
+/* =========================
+   공통 포커스 제거 (blur 제거)
+========================= */
+.customer-treatment-detail-button,
+.customer-treatment-delete-button,
+.customer-treatment-create-button {
+  outline: none;
+  box-shadow: none;
+}
+
+.customer-treatment-detail-button:focus,
+.customer-treatment-detail-button:active,
+.customer-treatment-detail-button:focus-visible,
+.customer-treatment-delete-button:focus,
+.customer-treatment-delete-button:active,
+.customer-treatment-delete-button:focus-visible,
+.customer-treatment-create-button:focus,
+.customer-treatment-create-button:active,
+.customer-treatment-create-button:focus-visible {
+  outline: none;
+  box-shadow: none;
+  filter: none;
 }
