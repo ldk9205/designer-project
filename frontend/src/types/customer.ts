@@ -19,3 +19,4 @@ export type CustomerResponseDto = {
   createdAt: string;
   updatedAt: string;
 };
+

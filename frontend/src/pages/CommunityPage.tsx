@@ -35,7 +35,7 @@ export default function CommunityPage() {
       }
     };
 
-    loadPosts();
+    void loadPosts();
   }, [page]);
 
   if (loading) {
@@ -48,19 +48,32 @@ export default function CommunityPage() {
 
   return (
     <div className="community-wrapper">
-      {/* 헤더 */}
+      <div className="community-top-bar">
+        <button
+          type="button"
+          className="community-back-btn"
+          onClick={() => navigate("/home")}
+        >
+          ← 이전으로
+        </button>
+      </div>
+
       <div className="community-header">
         <h2>💬 커뮤니티</h2>
 
-        <button onClick={() => navigate("/community/write")}>글쓰기</button>
+        <button
+          type="button"
+          className="community-write-btn"
+          onClick={() => navigate("/community/write")}
+        >
+          글쓰기
+        </button>
       </div>
 
-      {/* 게시글 없음 */}
       {posts.length === 0 && (
         <div className="empty-post">올라온 게시물이 없습니다.</div>
       )}
 
-      {/* 게시글 리스트 */}
       <div className="community-list">
         {posts.map((post) => (
           <div
@@ -71,8 +84,7 @@ export default function CommunityPage() {
             <div className="post-title">{post.title}</div>
 
             <div className="post-meta">
-              {post.designerName ?? "익명"} ·{" "}
-              {formatRelativeTime(post.createdAt)}
+              {post.designerName ?? "익명"} · {formatRelativeTime(post.createdAt)}
             </div>
 
             <div className="post-preview">
@@ -84,17 +96,19 @@ export default function CommunityPage() {
         ))}
       </div>
 
-      {/* 페이징 */}
       <div className="pagination">
-        {/* 이전 */}
-        <button disabled={page === 0} onClick={() => setPage(page - 1)}>
+        <button
+          type="button"
+          disabled={page === 0}
+          onClick={() => setPage(page - 1)}
+        >
           이전
         </button>
 
-        {/* 페이지 번호 */}
         {[...Array(totalPages)].map((_, i) => (
           <button
             key={i}
+            type="button"
             onClick={() => setPage(i)}
             className={page === i ? "active-page" : ""}
           >
@@ -102,9 +116,9 @@ export default function CommunityPage() {
           </button>
         ))}
 
-        {/* 다음 */}
         <button
-          disabled={page === totalPages - 1}
+          type="button"
+          disabled={page === totalPages - 1 || totalPages === 0}
           onClick={() => setPage(page + 1)}
         >
           다음

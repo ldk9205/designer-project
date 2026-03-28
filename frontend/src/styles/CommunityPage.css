@@ -4,6 +4,24 @@
   padding: 0 20px;
 }
 
+.community-top-bar {
+  margin-bottom: 16px;
+}
+
+.community-back-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #e5e7eb;
+  color: #111827;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.community-back-btn:hover {
+  background: #d1d5db;
+}
+
 .community-header {
   display: flex;
   justify-content: space-between;
@@ -15,7 +33,7 @@
   margin: 0;
 }
 
-.community-header button {
+.community-write-btn {
   padding: 8px 14px;
   border: none;
   background: #4f46e5;
@@ -25,7 +43,7 @@
   font-weight: 500;
 }
 
-.community-header button:hover {
+.community-write-btn:hover {
   background: #4338ca;
 }
 
@@ -65,6 +83,7 @@
   color: #444;
   font-size: 14px;
   line-height: 1.4;
+  white-space: pre-line;
 }
 
 .empty-post {
