@@ -64,7 +64,7 @@
         created_at AS createdAt,
         updated_at AS updatedAt
 
-        FROM board_comment
+        FROM board_comments
 
         WHERE id = #{id}
 
@@ -77,7 +77,7 @@
 
     <update id="update">
 
-        UPDATE board_comment
+        UPDATE board_comments
         SET
         content = #{content},
         updated_at = NOW()
@@ -92,7 +92,7 @@
 
     <delete id="delete">
 
-        DELETE FROM board_comment
+        DELETE FROM board_comments
         WHERE id = #{id}
 
     </delete>

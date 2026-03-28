@@ -10,6 +10,7 @@ import CommunityPage from "./pages/CommunityPage";
 import UploadPage from "./pages/UploadPage";
 import WritePostPage from "./pages/WritePostPage";
 import PostDetailPage from "./pages/PostDetailPage";
+import EditPostPage from "./pages/EditPostPage";
 
 import CustomerListPage from "./pages/CustomerListPage";
 import CustomerCreatePage from "./pages/CustomerCreatePage";
@@ -71,6 +72,7 @@ export default function App() {
 
             {/* 커뮤니티 */}
             <Route path="/community/write" element={<WritePostPage />} />
+            <Route path="/community/edit/:id" element={<EditPostPage />} />
 
             {/* 이미지 업로드 */}
             <Route path="/upload" element={<UploadPage />} />
