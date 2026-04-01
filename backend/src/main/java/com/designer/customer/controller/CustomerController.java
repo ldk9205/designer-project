@@ -1,6 +1,7 @@
 package com.designer.customer.controller;
 
 import com.designer.customer.dto.CustomerCreateRequestDto;
+import com.designer.customer.dto.CustomerPageResponseDto;
 import com.designer.customer.dto.CustomerUpdateRequestDto;
 import com.designer.customer.dto.CustomerResponseDto;
 import com.designer.customer.service.CustomerService;
@@ -9,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/customers")
@@ -29,15 +28,18 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    // 내 고객 목록 조회 + 이름 검색
-    // - /customers          -> 전체 목록
-    // - /customers?name=김   -> 이름에 '김'이 포함된 고객 목록
+    // 내 고객 목록 조회 + 이름 검색 + 페이징
+    // 예:
+    // /customers?page=0&size=5
+    // /customers?name=김&page=0&size=5
     @GetMapping
-    public ResponseEntity<List<CustomerResponseDto>> list(
+    public ResponseEntity<CustomerPageResponseDto> list(
             @RequestAttribute("designerId") Long designerId,
-            @RequestParam(required = false) String name
+            @RequestParam(required = false) String name,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
     ) {
-        return ResponseEntity.ok(customerService.getCustomers(designerId, name));
+        return ResponseEntity.ok(customerService.getCustomers(designerId, name, page, size));
     }
 
     // 내 고객 단일 조회

@@ -3,6 +3,7 @@ import type {
   CustomerCreateRequestDto,
   CustomerUpdateRequestDto,
   CustomerResponseDto,
+  CustomerPageResponseDto,
 } from "../types/customer";
 
 // 고객 등록
@@ -13,12 +14,18 @@ export const createCustomerApi = async (
   return response.data;
 };
 
-// 고객 목록 조회 + 이름 검색
-export const getCustomersApi = async (
-  name?: string
-): Promise<CustomerResponseDto[]> => {
+// 고객 목록 조회 + 이름 검색 + Paging Block
+export const getCustomersApi = async (params?: {
+  name?: string;
+  page?: number;
+  size?: number;
+}): Promise<CustomerPageResponseDto> => {
   const response = await api.get("/customers", {
-    params: name ? { name } : {},
+    params: {
+      name: params?.name,
+      page: params?.page ?? 0,
+      size: params?.size ?? 5,
+    },
   });
   return response.data;
 };

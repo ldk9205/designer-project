@@ -10,6 +10,24 @@ export default function CustomerDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const formatDateTime = (dateTime: string) => {
+    if (!dateTime) return "-";
+
+    const date = new Date(dateTime);
+
+    if (Number.isNaN(date.getTime())) {
+      return dateTime;
+    }
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
+
   useEffect(() => {
     const loadCustomer = async () => {
       try {
@@ -87,11 +105,11 @@ export default function CustomerDetailPage() {
           </div>
           <div className="customer-detail-row">
             <span>생성일</span>
-            <strong>{customer.createdAt}</strong>
+            <strong>{formatDateTime(customer.createdAt)}</strong>
           </div>
           <div className="customer-detail-row">
             <span>수정일</span>
-            <strong>{customer.updatedAt}</strong>
+            <strong>{formatDateTime(customer.updatedAt)}</strong>
           </div>
         </div>
 

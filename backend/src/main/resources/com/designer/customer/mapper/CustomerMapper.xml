@@ -16,7 +16,7 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
-    <!-- 고객 등록. customers.id는 AUTO_INCREMENT. 생성된 PK는 dto.id로 -->
+    <!-- 고객 등록 -->
     <insert id="insertCustomer" parameterType="map" useGeneratedKeys="true" keyProperty="dto.id">
         INSERT INTO customers (designer_id, name, phone, memo)
         VALUES (#{designerId}, #{dto.name}, #{dto.phone}, #{dto.memo})
@@ -30,12 +30,18 @@
         AND designer_id = #{designerId}
     </select>
 
-    <!-- 내 고객 목록 조회 + 이름 검색 -->
-    <!--
-        name이 없으면 전체 목록 조회
-        name이 있으면 해당 문자열을 포함한 고객만 조회
-    -->
-    <select id="selectCustomersByDesignerIdAndName" resultMap="CustomerResponseMap">
+    <!-- 내 고객 수 조회 + 이름 검색 -->
+    <select id="countCustomersByDesignerIdAndName" resultType="long">
+        SELECT COUNT(*)
+        FROM customers
+        WHERE designer_id = #{designerId}
+        <if test="name != null and name != ''">
+            AND name LIKE CONCAT('%', #{name}, '%')
+        </if>
+    </select>
+
+    <!-- 내 고객 목록 조회 + 이름 검색 + 페이징 -->
+    <select id="selectCustomersByDesignerIdAndNamePaged" resultMap="CustomerResponseMap">
         SELECT id, designer_id, name, phone, memo, created_at, updated_at
         FROM customers
         WHERE designer_id = #{designerId}
@@ -43,9 +49,10 @@
             AND name LIKE CONCAT('%', #{name}, '%')
         </if>
         ORDER BY created_at DESC
+        LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <!-- 고객 부분 수정. null인 필드는 수정 X. 단, 모든 필드가 null인 요청은 service에서 미리 차단 -->
+    <!-- 고객 부분 수정 -->
     <update id="updateCustomerByIdAndDesignerId" parameterType="map">
         UPDATE customers
         <set>

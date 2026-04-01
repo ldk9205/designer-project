@@ -37,11 +37,27 @@ export default function CustomerCreatePage() {
     setError("");
     setCreatedCustomer(null);
 
+    const trimmedName = form.name.trim();
+    const trimmedPhone = form.phone.trim();
+    const trimmedMemo = form.memo?.trim() || "";
+
+    if (!trimmedName) {
+      setError("이름은 필수입니다.");
+      setLoading(false);
+      return;
+    }
+
+    if (!trimmedPhone) {
+      setError("전화번호는 필수입니다.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const payload: CustomerCreateRequestDto = {
-        name: form.name.trim(),
-        phone: form.phone?.trim() || "",
-        memo: form.memo?.trim() || "",
+        name: trimmedName,
+        phone: trimmedPhone,
+        memo: trimmedMemo,
       };
 
       const created = await createCustomerApi(payload);
@@ -79,7 +95,7 @@ export default function CustomerCreatePage() {
               id="phone"
               type="text"
               name="phone"
-              value={form.phone ?? ""}
+              value={form.phone}
               onChange={onChange}
               placeholder="전화번호"
             />
