@@ -3,6 +3,7 @@ package com.designer.treatment.service;
 import com.designer.image.dto.ImageResponseDto;
 import com.designer.image.service.ImageService;
 import com.designer.treatment.dto.TreatmentCreateRequestDto;
+import com.designer.treatment.dto.TreatmentCreateResponseDto;
 import com.designer.treatment.dto.TreatmentDetailResponseDto;
 import com.designer.treatment.dto.TreatmentDto;
 import com.designer.treatment.dto.TreatmentResponseDto;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.designer.s3.service.S3Service;
 import java.util.List;
 
 @Service
@@ -20,10 +22,11 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     private final TreatmentMapper treatmentMapper;
     private final ImageService imageService;
+    private final S3Service s3Service;
 
     @Override
     @Transactional
-    public void createTreatment(Long designerId, TreatmentCreateRequestDto dto) {
+    public TreatmentCreateResponseDto createTreatment(Long designerId, TreatmentCreateRequestDto dto) {
         TreatmentDto treatment = new TreatmentDto();
         treatment.setDesignerId(designerId);
         treatment.setCustomerId(dto.getCustomerId());
@@ -34,6 +37,8 @@ public class TreatmentServiceImpl implements TreatmentService {
         treatment.setDetail(dto.getDetail());
 
         treatmentMapper.insertTreatment(treatment);
+
+        return new TreatmentCreateResponseDto(treatment.getId());
     }
 
     @Override
@@ -111,10 +116,22 @@ public class TreatmentServiceImpl implements TreatmentService {
     @Override
     @Transactional
     public void deleteTreatment(Long designerId, Long treatmentId) {
+        TreatmentDto treatment =
+                treatmentMapper.selectTreatmentByIdAndDesignerId(treatmentId, designerId);
+
+        if (treatment == null) {
+            throw new IllegalArgumentException("해당 시술 이력을 찾을 수 없습니다.");
+        }
+
+        String treatmentPrefix =
+                treatment.getCustomerId() + "/" + treatmentId + "/";
+
+        s3Service.deleteObjectsByPrefix(treatmentPrefix);
+
         int deleted = treatmentMapper.deleteTreatmentByIdAndDesignerId(treatmentId, designerId);
 
         if (deleted == 0) {
-            throw new IllegalArgumentException("해당 시술 이력을 찾을 수 없습니다.");
+            throw new IllegalStateException("시술 이력 삭제에 실패했습니다.");
         }
     }
 }

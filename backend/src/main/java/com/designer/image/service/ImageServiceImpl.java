@@ -4,6 +4,7 @@ import com.designer.image.dto.ImageDto;
 import com.designer.image.dto.ImageResponseDto;
 import com.designer.image.mapper.ImageMapper;
 import com.designer.s3.service.S3ServiceImpl;
+import com.designer.treatment.dto.TreatmentDto;
 import com.designer.treatment.mapper.TreatmentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,24 +33,22 @@ public class ImageServiceImpl implements ImageService {
             Long designerId,
             MultipartFile file
     ) {
+        TreatmentDto treatment =
+                treatmentMapper.selectTreatmentByIdAndDesignerId(treatmentId, designerId);
 
-        // 1️⃣ treatment 존재 및 소유권 확인
-        if (treatmentMapper.selectTreatmentByIdAndDesignerId(treatmentId, designerId) == null) {
+        if (treatment == null) {
             throw new IllegalArgumentException("존재하지 않는 시술이거나 본인 소유의 시술이 아닙니다.");
         }
 
-        // 2️⃣ S3 key 생성
         String key = buildS3Key(
-                designerId,
+                treatment.getCustomerId(),
                 treatmentId,
                 file.getOriginalFilename()
         );
 
         try {
-            // 3️⃣ S3 업로드
             s3ServiceImpl.uploadFile(key, file);
 
-            // 4️⃣ DB 저장
             imageMapper.insertTreatmentImage(
                     treatmentId,
                     key,
@@ -57,14 +56,12 @@ public class ImageServiceImpl implements ImageService {
             );
 
         } catch (Exception e) {
-
-            // S3 업로드는 성공했는데 DB 실패했을 경우 대비
             try {
                 s3ServiceImpl.deleteObject(key);
             } catch (Exception ignored) {
             }
 
-            throw new RuntimeException("이미지 업로드 중 오류가 발생했습니다.");
+            throw new RuntimeException("이미지 업로드 중 오류가 발생했습니다.", e);
         }
     }
 
@@ -134,20 +131,28 @@ public class ImageServiceImpl implements ImageService {
      * ex) designerId/treatmentId/uuid_filename.jpg
      */
     private String buildS3Key(
-            Long designerId,
+            Long customerId,
             Long treatmentId,
             String originalFilename
     ) {
-
         String uuid = UUID.randomUUID().toString();
+        String extension = extractExtension(originalFilename);
 
-        return designerId +
+        return customerId +
                 "/" +
                 treatmentId +
                 "/" +
                 uuid +
-                "_" +
-                originalFilename;
+                extension;
+    }
+
+    private String extractExtension(String originalFilename) {
+        if (originalFilename == null || !originalFilename.contains(".")) {
+            return "";
+        }
+
+        int lastDotIndex = originalFilename.lastIndexOf(".");
+        return originalFilename.substring(lastDotIndex).toLowerCase();
     }
 
     @Transactional(readOnly = true)

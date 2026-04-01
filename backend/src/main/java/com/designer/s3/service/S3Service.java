@@ -23,4 +23,9 @@ public interface S3Service {
      * 객체 삭제
      */
     void deleteObject(String key);
+
+    /**
+     * s3 폴더 내 prefix 삭제
+     */
+    void deleteObjectsByPrefix(String prefix);
 }

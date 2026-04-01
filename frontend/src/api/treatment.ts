@@ -1,19 +1,19 @@
 import api from "./axios";
 import type {
   TreatmentCreateRequestDto,
+  TreatmentCreateResponseDto,
   TreatmentDetailResponseDto,
   TreatmentResponseDto,
   TreatmentUpdateRequestDto,
 } from "../types/treatment";
 
-// 시술 등록
 export const createTreatmentApi = async (
   payload: TreatmentCreateRequestDto
-): Promise<void> => {
-  await api.post("/treatments", payload);
+): Promise<TreatmentCreateResponseDto> => {
+  const response = await api.post("/treatments", payload);
+  return response.data;
 };
 
-// 특정 고객의 시술 이력 목록 조회
 export const getTreatmentsByCustomerApi = async (
   customerId: number
 ): Promise<TreatmentResponseDto[]> => {
@@ -21,7 +21,6 @@ export const getTreatmentsByCustomerApi = async (
   return response.data;
 };
 
-// 시술 단건 상세 조회
 export const getTreatmentDetailApi = async (
   treatmentId: number
 ): Promise<TreatmentDetailResponseDto> => {
@@ -29,7 +28,6 @@ export const getTreatmentDetailApi = async (
   return response.data;
 };
 
-// 시술 수정 (PATCH)
 export const updateTreatmentApi = async (
   treatmentId: number,
   payload: TreatmentUpdateRequestDto
@@ -37,7 +35,6 @@ export const updateTreatmentApi = async (
   await api.patch(`/treatments/${treatmentId}`, payload);
 };
 
-// 시술 삭제
 export const deleteTreatmentApi = async (
   treatmentId: number
 ): Promise<void> => {

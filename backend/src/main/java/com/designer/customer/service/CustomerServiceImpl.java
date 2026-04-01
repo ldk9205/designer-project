@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.designer.s3.service.S3Service;
 import java.util.List;
 
 @Service
@@ -17,6 +18,7 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerMapper customerMapper;
+    private final S3Service s3Service;
 
     // 고객 등록
     // 1. insert 수행
@@ -92,6 +94,17 @@ public class CustomerServiceImpl implements CustomerService {
     // 고객 삭제
     @Override
     public void deleteCustomer(Long designerId, Long customerId) {
+        CustomerResponseDto customer =
+                customerMapper.selectCustomerByIdAndDesignerId(customerId, designerId);
+
+        if (customer == null) {
+            throw new CustomerNotFoundException(customerId);
+        }
+
+        String customerPrefix = customerId + "/";
+
+        s3Service.deleteObjectsByPrefix(customerPrefix);
+
         int deleted =
                 customerMapper.deleteCustomerByIdAndDesignerId(customerId, designerId);
 

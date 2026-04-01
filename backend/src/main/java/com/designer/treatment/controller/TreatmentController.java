@@ -1,6 +1,7 @@
 package com.designer.treatment.controller;
 
 import com.designer.treatment.dto.TreatmentCreateRequestDto;
+import com.designer.treatment.dto.TreatmentCreateResponseDto;
 import com.designer.treatment.dto.TreatmentDetailResponseDto;
 import com.designer.treatment.dto.TreatmentResponseDto;
 import com.designer.treatment.dto.TreatmentUpdateRequestDto;
@@ -19,17 +20,15 @@ public class TreatmentController {
 
     private final TreatmentService treatmentService;
 
-    // 시술 등록
     @PostMapping("/treatments")
-    public ResponseEntity<Void> create(
+    public ResponseEntity<TreatmentCreateResponseDto> create(
             @RequestAttribute("designerId") Long designerId,
             @Valid @RequestBody TreatmentCreateRequestDto dto
     ) {
-        treatmentService.createTreatment(designerId, dto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        TreatmentCreateResponseDto response = treatmentService.createTreatment(designerId, dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    // 특정 고객의 시술 이력 목록 조회
     @GetMapping("/customers/{customerId}/treatments")
     public ResponseEntity<List<TreatmentResponseDto>> list(
             @RequestAttribute("designerId") Long designerId,
@@ -40,7 +39,6 @@ public class TreatmentController {
         );
     }
 
-    // 시술 상세 조회
     @GetMapping("/treatments/{treatmentId}")
     public ResponseEntity<TreatmentDetailResponseDto> get(
             @RequestAttribute("designerId") Long designerId,
@@ -51,7 +49,6 @@ public class TreatmentController {
         );
     }
 
-    // 시술 부분 수정
     @PatchMapping("/treatments/{treatmentId}")
     public ResponseEntity<Void> update(
             @RequestAttribute("designerId") Long designerId,
@@ -62,7 +59,6 @@ public class TreatmentController {
         return ResponseEntity.noContent().build();
     }
 
-    // 시술 삭제
     @DeleteMapping("/treatments/{treatmentId}")
     public ResponseEntity<Void> delete(
             @RequestAttribute("designerId") Long designerId,
