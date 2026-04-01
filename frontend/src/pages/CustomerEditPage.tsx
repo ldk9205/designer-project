@@ -76,8 +76,8 @@ export default function CustomerEditPage() {
       const formPhone = form.phone?.trim() ?? "";
       const originalPhone = original.phone?.trim() ?? "";
 
-      const formMemo = form.memo ?? "";
-      const originalMemo = original.memo ?? "";
+      const formMemo = form.memo?.trim() ?? "";
+      const originalMemo = original.memo?.trim() ?? "";
 
       if (formName !== originalName) payload.name = formName;
       if (formPhone !== originalPhone) payload.phone = formPhone;

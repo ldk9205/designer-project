@@ -10,12 +10,26 @@ export default function CustomerListPage() {
   const [error, setError] = useState("");
   const [searchName, setSearchName] = useState("");
 
-  const loadCustomers = async (name?: string) => {
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const size = 5;       // 한 페이지당 고객 수
+  const blockSize = 5;  // 페이지 블록 크기
+
+  const loadCustomers = async (targetPage: number = 0, name?: string) => {
     try {
       setLoading(true);
       setError("");
-      const data = await getCustomersApi(name);
-      setCustomers(data);
+
+      const data = await getCustomersApi({
+        name: name?.trim() ? name.trim() : undefined,
+        page: targetPage,
+        size,
+      });
+
+      setCustomers(data.content);
+      setPage(data.page);
+      setTotalPages(data.totalPages);
     } catch (err: any) {
       setError(err?.response?.data?.message || err?.message || "고객 목록 조회 실패");
     } finally {
@@ -25,17 +39,17 @@ export default function CustomerListPage() {
 
   // 처음 진입 시 전체 목록 조회
   useEffect(() => {
-    void loadCustomers();
+    void loadCustomers(0, "");
   }, []);
 
   const onSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    await loadCustomers(searchName);
+    await loadCustomers(0, searchName);
   };
 
   const onReset = async () => {
     setSearchName("");
-    await loadCustomers();
+    await loadCustomers(0, "");
   };
 
   const onDelete = async (customerId: number) => {
@@ -45,12 +59,23 @@ export default function CustomerListPage() {
     try {
       await deleteCustomerApi(customerId);
 
-      // 삭제 후 현재 화면 목록에서만 제거
-      setCustomers((prev) => prev.filter((c) => c.id !== customerId));
+      const nextPage =
+        customers.length === 1 && page > 0 ? page - 1 : page;
+
+      await loadCustomers(nextPage, searchName);
     } catch (err: any) {
       alert(err?.response?.data?.message || err?.message || "고객 삭제 실패");
     }
   };
+
+  const currentBlock = Math.floor(page / blockSize);
+  const startPage = currentBlock * blockSize;
+  const endPage = Math.min(startPage + blockSize, totalPages);
+
+  const pageNumbers = Array.from(
+    { length: endPage - startPage },
+    (_, i) => startPage + i
+  );
 
   return (
     <div className="customer-list-page">
@@ -98,49 +123,84 @@ export default function CustomerListPage() {
         )}
 
         {!loading && !error && customers.length > 0 && (
-          <div className="customer-list-table-wrap">
-            <table className="customer-list-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>이름</th>
-                  <th>전화번호</th>
-                  <th>관리</th>
-                </tr>
-              </thead>
-              <tbody>
-                {customers.map((customer) => (
-                  <tr key={customer.id}>
-                    <td>{customer.id}</td>
-
-                    <td>
-                      <Link
-                        to={`/customers/${customer.id}`}
-                        className="customer-name-link"
-                      >
-                        {customer.name}
-                      </Link>
-                    </td>
-
-                    <td>{customer.phone || "-"}</td>
-
-                    <td>
-                      <div className="customer-list-actions">
-                        <Link
-                          to={`/customers/${customer.id}/treatments`}
-                          className="customer-list-history-link"
-                        >
-                          고객 이력
-                        </Link>
-
-                        <button onClick={() => onDelete(customer.id)}>삭제</button>
-                      </div>
-                    </td>
+          <>
+            <div className="customer-list-table-wrap">
+              <table className="customer-list-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>이름</th>
+                    <th>전화번호</th>
+                    <th>관리</th>
                   </tr>
+                </thead>
+                <tbody>
+                  {customers.map((customer) => (
+                    <tr key={customer.id}>
+                      <td>{customer.id}</td>
+
+                      <td>
+                        <Link
+                          to={`/customers/${customer.id}`}
+                          className="customer-name-link"
+                        >
+                          {customer.name}
+                        </Link>
+                      </td>
+
+                      <td>{customer.phone || "-"}</td>
+
+                      <td>
+                        <div className="customer-list-actions">
+                          <Link
+                            to={`/customers/${customer.id}/treatments`}
+                            className="customer-list-history-link"
+                          >
+                            고객 이력
+                          </Link>
+
+                          <button type="button" onClick={() => onDelete(customer.id)}>
+                            삭제
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {totalPages > 0 && (
+              <div className="customer-pagination">
+                <button
+                  type="button"
+                  onClick={() => loadCustomers(startPage - 1, searchName)}
+                  disabled={startPage === 0}
+                >
+                  이전
+                </button>
+
+                {pageNumbers.map((pageNumber) => (
+                  <button
+                    key={pageNumber}
+                    type="button"
+                    className={pageNumber === page ? "active" : ""}
+                    onClick={() => loadCustomers(pageNumber, searchName)}
+                  >
+                    {pageNumber + 1}
+                  </button>
                 ))}
-              </tbody>
-            </table>
-          </div>
+
+                <button
+                  type="button"
+                  onClick={() => loadCustomers(endPage, searchName)}
+                  disabled={endPage >= totalPages}
+                >
+                  다음
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

@@ -1,6 +1,7 @@
 package com.designer.customer.service;
 
 import com.designer.customer.dto.CustomerCreateRequestDto;
+import com.designer.customer.dto.CustomerPageResponseDto;
 import com.designer.customer.dto.CustomerUpdateRequestDto;
 import com.designer.customer.dto.CustomerResponseDto;
 import com.designer.customer.exception.CustomerNotFoundException;
@@ -21,9 +22,6 @@ public class CustomerServiceImpl implements CustomerService {
     private final S3Service s3Service;
 
     // 고객 등록
-    // 1. insert 수행
-    // 2. generated key가 dto.id에 세팅됨
-    // 3. 방금 생성된 고객을 다시 조회해서 응답 DTO 반환
     @Override
     public CustomerResponseDto createCustomer(Long designerId, CustomerCreateRequestDto dto) {
         customerMapper.insertCustomer(designerId, dto);
@@ -38,18 +36,45 @@ public class CustomerServiceImpl implements CustomerService {
         return created;
     }
 
-    // 내 고객 목록 조회 + 이름 검색
+    // 내 고객 목록 조회 + 이름 검색 + Paging Block
     @Override
     @Transactional(readOnly = true)
-    public List<CustomerResponseDto> getCustomers(Long designerId, String name) {
+    public CustomerPageResponseDto getCustomers(Long designerId, String name, int page, int size) {
         String keyword = (name == null) ? null : name.trim();
 
-        // 검색어가 null 또는 공백뿐이면 전체 목록 조회로 처리
         if (keyword != null && keyword.isEmpty()) {
             keyword = null;
         }
 
-        return customerMapper.selectCustomersByDesignerIdAndName(designerId, keyword);
+        if (page < 0) {
+            throw new IllegalArgumentException("page는 0 이상이어야 합니다.");
+        }
+
+        if (size <= 0) {
+            throw new IllegalArgumentException("size는 1 이상이어야 합니다.");
+        }
+
+        long totalElements = customerMapper.countCustomersByDesignerIdAndName(designerId, keyword);
+        int totalPages = totalElements == 0 ? 0 : (int) Math.ceil((double) totalElements / size);
+
+        if (totalPages > 0 && page >= totalPages) {
+            throw new IllegalArgumentException("존재하지 않는 페이지입니다.");
+        }
+
+        int offset = page * size;
+
+        List<CustomerResponseDto> content =
+                customerMapper.selectCustomersByDesignerIdAndNamePaged(designerId, keyword, size, offset);
+
+        return CustomerPageResponseDto.builder()
+                .content(content)
+                .page(page)
+                .size(size)
+                .totalElements(totalElements)
+                .totalPages(totalPages)
+                .first(page == 0)
+                .last(totalPages == 0 || page >= totalPages - 1)
+                .build();
     }
 
     // 내 고객 단건 조회

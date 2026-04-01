@@ -1,6 +1,6 @@
 export type CustomerCreateRequestDto = {
   name: string;
-  phone?: string;
+  phone: string;
   memo?: string;
 };
 
@@ -20,3 +20,12 @@ export type CustomerResponseDto = {
   updatedAt: string;
 };
 
+export type CustomerPageResponseDto = {
+  content: CustomerResponseDto[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  last: boolean;
+};
