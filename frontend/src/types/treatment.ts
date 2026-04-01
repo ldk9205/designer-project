@@ -41,3 +41,7 @@ export type TreatmentDetailResponseDto = {
   updatedAt: string;
   images: ImageResponseDto[];
 };
+
+export type TreatmentCreateResponseDto = {
+  treatmentId: number;
+};

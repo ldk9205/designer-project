@@ -130,4 +130,38 @@ public class S3ServiceImpl implements S3Service {
 
         s3Client.deleteObject(deleteObjectRequest);
     }
+
+    @Override
+    public void deleteObjectsByPrefix(String prefix) {
+        String continuationToken = null;
+
+        do {
+            ListObjectsV2Request listRequest = ListObjectsV2Request.builder()
+                    .bucket(bucketName)
+                    .prefix(prefix)
+                    .continuationToken(continuationToken)
+                    .build();
+
+            ListObjectsV2Response listResponse = s3Client.listObjectsV2(listRequest);
+
+            if (listResponse.hasContents() && !listResponse.contents().isEmpty()) {
+                java.util.List<ObjectIdentifier> objectsToDelete = listResponse.contents().stream()
+                        .map(s3Object -> ObjectIdentifier.builder()
+                                .key(s3Object.key())
+                                .build())
+                        .toList();
+
+                DeleteObjectsRequest deleteRequest = DeleteObjectsRequest.builder()
+                        .bucket(bucketName)
+                        .delete(Delete.builder()
+                                .objects(objectsToDelete)
+                                .build())
+                        .build();
+
+                s3Client.deleteObjects(deleteRequest);
+            }
+
+            continuationToken = listResponse.nextContinuationToken();
+        } while (continuationToken != null);
+    }
 }

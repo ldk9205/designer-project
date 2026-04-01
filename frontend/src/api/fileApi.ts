@@ -88,3 +88,50 @@ export const fetchCommunityList = async (): Promise<CommunityItem[]> => {
   const res = await api.get<CommunityItem[]>("/api/community");
   return res.data;
 };
+
+// =============================== 2026-04-01
+export interface TreatmentImageItem {
+  id: number;
+  imageUrl: string;
+  originalName: string | null;
+}
+
+export interface CommunityItem {
+  imageId: number;
+  customerName: string;
+  treatmentDate: string;
+  category: string;
+  styleName: string;
+  presignedUrl: string;
+}
+
+export const uploadTreatmentImageApi = async (
+  treatmentId: number,
+  file: File
+): Promise<void> => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  await api.post(`/api/treatments/${treatmentId}/images`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+export const getTreatmentImagesApi = async (
+  treatmentId: number
+): Promise<TreatmentImageItem[]> => {
+  const res = await api.get(`/api/treatments/${treatmentId}/images`);
+  return res.data;
+};
+
+export const deleteTreatmentImageApi = async (imageId: number): Promise<void> => {
+  await api.delete(`/api/images/${imageId}`);
+};
+
+// export const fetchCommunityList = async (): Promise<CommunityItem[]> => {
+//   const res = await api.get<CommunityItem[]>("/api/community");
+//   return res.data;
+// };
+// =============================== 2026-04-01 end
