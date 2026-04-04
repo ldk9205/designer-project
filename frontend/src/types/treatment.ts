@@ -45,3 +45,13 @@ export type TreatmentDetailResponseDto = {
 export type TreatmentCreateResponseDto = {
   treatmentId: number;
 };
+
+export type TreatmentPageResponseDto = {
+  content: TreatmentResponseDto[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  last: boolean;
+};

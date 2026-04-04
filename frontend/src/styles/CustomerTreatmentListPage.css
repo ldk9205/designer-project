@@ -19,12 +19,25 @@
   align-items: center;
   gap: 16px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.customer-treatment-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .customer-treatment-title {
   margin: 0;
   font-size: 28px;
   font-weight: 700;
+}
+
+.customer-treatment-subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
 }
 
 .customer-treatment-header-actions {
@@ -34,9 +47,6 @@
   flex-wrap: wrap;
 }
 
-/* =========================
-   링크 버튼 (홈 / 목록)
-========================= */
 .customer-treatment-home-link,
 .customer-treatment-back-link {
   text-decoration: none;
@@ -54,9 +64,6 @@
   background: #d1d5db;
 }
 
-/* =========================
-   시술 등록 버튼 (Primary Dark)
-========================= */
 .customer-treatment-create-button {
   border: none;
   border-radius: 10px;
@@ -72,13 +79,15 @@
   background: #1f2937;
 }
 
-/* =========================
-   테이블
-========================= */
 .customer-treatment-empty {
   padding: 40px 0;
   text-align: center;
   color: #6b7280;
+}
+
+.customer-treatment-table-wrap {
+  width: 100%;
+  overflow-x: auto;
 }
 
 .customer-treatment-table {
@@ -92,6 +101,7 @@
   border-bottom: 1px solid #eceff3;
   text-align: left;
   vertical-align: middle;
+  white-space: nowrap;
 }
 
 .customer-treatment-table th {
@@ -105,9 +115,6 @@
   gap: 8px;
 }
 
-/* =========================
-   상세 이력 버튼 (Primary Blue)
-========================= */
 .customer-treatment-detail-button {
   border: none;
   border-radius: 8px;
@@ -127,9 +134,6 @@
   transform: scale(0.97);
 }
 
-/* =========================
-   삭제 버튼 (Danger Red)
-========================= */
 .customer-treatment-delete-button {
   border: none;
   border-radius: 8px;
@@ -149,12 +153,70 @@
   transform: scale(0.97);
 }
 
-/* =========================
-   공통 포커스 제거 (blur 제거)
-========================= */
+.customer-treatment-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.customer-treatment-page-number-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.customer-treatment-page-nav-button,
+.customer-treatment-page-number-button {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.05s ease;
+}
+
+.customer-treatment-page-nav-button:hover,
+.customer-treatment-page-number-button:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.customer-treatment-page-nav-button:active,
+.customer-treatment-page-number-button:active {
+  transform: scale(0.97);
+}
+
+.customer-treatment-page-number-button.active {
+  background: #111827;
+  border-color: #111827;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.customer-treatment-page-nav-button:disabled,
+.customer-treatment-page-number-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .customer-treatment-detail-button,
 .customer-treatment-delete-button,
-.customer-treatment-create-button {
+.customer-treatment-create-button,
+.customer-treatment-page-nav-button,
+.customer-treatment-page-number-button {
   outline: none;
   box-shadow: none;
 }
@@ -167,8 +229,39 @@
 .customer-treatment-delete-button:focus-visible,
 .customer-treatment-create-button:focus,
 .customer-treatment-create-button:active,
-.customer-treatment-create-button:focus-visible {
+.customer-treatment-create-button:focus-visible,
+.customer-treatment-page-nav-button:focus,
+.customer-treatment-page-nav-button:active,
+.customer-treatment-page-nav-button:focus-visible,
+.customer-treatment-page-number-button:focus,
+.customer-treatment-page-number-button:active,
+.customer-treatment-page-number-button:focus-visible {
   outline: none;
   box-shadow: none;
   filter: none;
+}
+
+@media (max-width: 768px) {
+  .customer-treatment-page {
+    padding: 16px;
+  }
+
+  .customer-treatment-card {
+    padding: 18px;
+  }
+
+  .customer-treatment-title {
+    font-size: 24px;
+  }
+
+  .customer-treatment-row-actions {
+    flex-direction: column;
+  }
+
+  .customer-treatment-page-nav-button,
+  .customer-treatment-page-number-button {
+    height: 36px;
+    min-width: 36px;
+    font-size: 13px;
+  }
 }

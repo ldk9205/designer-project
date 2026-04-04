@@ -4,6 +4,9 @@ import { deleteCustomerApi, getCustomersApi } from "../api/customer";
 import type { CustomerResponseDto } from "../types/customer";
 import "../styles/CustomerListPage.css";
 
+const PAGE_SIZE = 5;
+const PAGE_BLOCK_SIZE = 5;
+
 export default function CustomerListPage() {
   const [customers, setCustomers] = useState<CustomerResponseDto[]>([]);
   const [loading, setLoading] = useState(true);
@@ -12,9 +15,7 @@ export default function CustomerListPage() {
 
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-
-  const size = 5;       // 한 페이지당 고객 수
-  const blockSize = 5;  // 페이지 블록 크기
+  const [totalElements, setTotalElements] = useState(0);
 
   const loadCustomers = async (targetPage: number = 0, name?: string) => {
     try {
@@ -24,20 +25,24 @@ export default function CustomerListPage() {
       const data = await getCustomersApi({
         name: name?.trim() ? name.trim() : undefined,
         page: targetPage,
-        size,
+        size: PAGE_SIZE,
       });
 
       setCustomers(data.content);
       setPage(data.page);
       setTotalPages(data.totalPages);
+      setTotalElements(data.totalElements);
     } catch (err: any) {
-      setError(err?.response?.data?.message || err?.message || "고객 목록 조회 실패");
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "고객 목록 조회 실패"
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // 처음 진입 시 전체 목록 조회
   useEffect(() => {
     void loadCustomers(0, "");
   }, []);
@@ -64,13 +69,17 @@ export default function CustomerListPage() {
 
       await loadCustomers(nextPage, searchName);
     } catch (err: any) {
-      alert(err?.response?.data?.message || err?.message || "고객 삭제 실패");
+      alert(
+        err?.response?.data?.message ||
+          err?.message ||
+          "고객 삭제 실패"
+      );
     }
   };
 
-  const currentBlock = Math.floor(page / blockSize);
-  const startPage = currentBlock * blockSize;
-  const endPage = Math.min(startPage + blockSize, totalPages);
+  const currentBlock = Math.floor(page / PAGE_BLOCK_SIZE);
+  const startPage = currentBlock * PAGE_BLOCK_SIZE;
+  const endPage = Math.min(startPage + PAGE_BLOCK_SIZE, totalPages);
 
   const pageNumbers = Array.from(
     { length: endPage - startPage },
@@ -80,11 +89,15 @@ export default function CustomerListPage() {
   return (
     <div className="customer-list-page">
       <div className="customer-list-card">
-        <h1 className="customer-list-title">고객 목록</h1>
-        <p className="customer-list-subtitle">등록된 고객을 확인하고 관리하세요</p>
+        <div className="customer-list-header">
+          <div className="customer-list-title-wrap">
+            <h1 className="customer-list-title">고객 목록</h1>
+            <p className="customer-list-subtitle">
+              총 {totalElements}건
+            </p>
+          </div>
 
-        <div className="customer-list-top">
-          <div className="customer-list-top-actions">
+          <div className="customer-list-header-actions">
             <Link to="/home" className="customer-list-home-link">
               홈으로
             </Link>
@@ -138,7 +151,6 @@ export default function CustomerListPage() {
                   {customers.map((customer) => (
                     <tr key={customer.id}>
                       <td>{customer.id}</td>
-
                       <td>
                         <Link
                           to={`/customers/${customer.id}`}
@@ -147,9 +159,7 @@ export default function CustomerListPage() {
                           {customer.name}
                         </Link>
                       </td>
-
                       <td>{customer.phone || "-"}</td>
-
                       <td>
                         <div className="customer-list-actions">
                           <Link
@@ -159,7 +169,11 @@ export default function CustomerListPage() {
                             고객 이력
                           </Link>
 
-                          <button type="button" onClick={() => onDelete(customer.id)}>
+                          <button
+                            type="button"
+                            className="customer-list-delete-button"
+                            onClick={() => onDelete(customer.id)}
+                          >
                             삭제
                           </button>
                         </div>
@@ -171,32 +185,56 @@ export default function CustomerListPage() {
             </div>
 
             {totalPages > 0 && (
-              <div className="customer-pagination">
+              <div className="customer-list-pagination">
                 <button
                   type="button"
+                  className="customer-list-page-nav-button"
+                  onClick={() => loadCustomers(0, searchName)}
+                  disabled={page === 0}
+                >
+                  처음
+                </button>
+
+                <button
+                  type="button"
+                  className="customer-list-page-nav-button"
                   onClick={() => loadCustomers(startPage - 1, searchName)}
                   disabled={startPage === 0}
                 >
                   이전
                 </button>
 
-                {pageNumbers.map((pageNumber) => (
-                  <button
-                    key={pageNumber}
-                    type="button"
-                    className={pageNumber === page ? "active" : ""}
-                    onClick={() => loadCustomers(pageNumber, searchName)}
-                  >
-                    {pageNumber + 1}
-                  </button>
-                ))}
+                <div className="customer-list-page-number-group">
+                  {pageNumbers.map((pageNumber) => (
+                    <button
+                      key={pageNumber}
+                      type="button"
+                      className={`customer-list-page-number-button ${
+                        pageNumber === page ? "active" : ""
+                      }`}
+                      onClick={() => loadCustomers(pageNumber, searchName)}
+                    >
+                      {pageNumber + 1}
+                    </button>
+                  ))}
+                </div>
 
                 <button
                   type="button"
+                  className="customer-list-page-nav-button"
                   onClick={() => loadCustomers(endPage, searchName)}
                   disabled={endPage >= totalPages}
                 >
                   다음
+                </button>
+
+                <button
+                  type="button"
+                  className="customer-list-page-nav-button"
+                  onClick={() => loadCustomers(totalPages - 1, searchName)}
+                  disabled={page >= totalPages - 1}
+                >
+                  마지막
                 </button>
               </div>
             )}

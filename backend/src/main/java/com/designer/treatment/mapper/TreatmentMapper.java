@@ -16,6 +16,13 @@ public interface TreatmentMapper {
     // 특정 고객의 시술 목록 조회
     List<TreatmentDto> selectTreatmentsByCustomerIdAndDesignerId(
             @Param("customerId") Long customerId,
+            @Param("designerId") Long designerId,
+            @Param("offset") int offset,
+            @Param("size") int size
+    );
+
+    long countTreatmentsByCustomerIdAndDesignerId(
+            @Param("customerId") Long customerId,
             @Param("designerId") Long designerId
     );
 

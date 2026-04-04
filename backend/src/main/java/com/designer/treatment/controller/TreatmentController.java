@@ -1,10 +1,6 @@
 package com.designer.treatment.controller;
 
-import com.designer.treatment.dto.TreatmentCreateRequestDto;
-import com.designer.treatment.dto.TreatmentCreateResponseDto;
-import com.designer.treatment.dto.TreatmentDetailResponseDto;
-import com.designer.treatment.dto.TreatmentResponseDto;
-import com.designer.treatment.dto.TreatmentUpdateRequestDto;
+import com.designer.treatment.dto.*;
 import com.designer.treatment.service.TreatmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +26,14 @@ public class TreatmentController {
     }
 
     @GetMapping("/customers/{customerId}/treatments")
-    public ResponseEntity<List<TreatmentResponseDto>> list(
+    public ResponseEntity<TreatmentPageResponseDto> list(
             @RequestAttribute("designerId") Long designerId,
-            @PathVariable Long customerId
+            @PathVariable Long customerId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
     ) {
         return ResponseEntity.ok(
-                treatmentService.getTreatmentsByCustomer(designerId, customerId)
+                treatmentService.getTreatmentsByCustomer(designerId, customerId, page, size)
         );
     }
 

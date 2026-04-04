@@ -2,18 +2,13 @@ package com.designer.treatment.service;
 
 import com.designer.image.dto.ImageResponseDto;
 import com.designer.image.service.ImageService;
-import com.designer.treatment.dto.TreatmentCreateRequestDto;
-import com.designer.treatment.dto.TreatmentCreateResponseDto;
-import com.designer.treatment.dto.TreatmentDetailResponseDto;
-import com.designer.treatment.dto.TreatmentDto;
-import com.designer.treatment.dto.TreatmentResponseDto;
-import com.designer.treatment.dto.TreatmentUpdateRequestDto;
+import com.designer.s3.service.S3Service;
+import com.designer.treatment.dto.*;
 import com.designer.treatment.mapper.TreatmentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.designer.s3.service.S3Service;
 import java.util.List;
 
 @Service
@@ -43,11 +38,20 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<TreatmentResponseDto> getTreatmentsByCustomer(Long designerId, Long customerId) {
-        List<TreatmentDto> treatments =
-                treatmentMapper.selectTreatmentsByCustomerIdAndDesignerId(customerId, designerId);
+    public TreatmentPageResponseDto getTreatmentsByCustomer(Long designerId, Long customerId, int page, int size) {
+        if (page < 0) {page = 0;}
+        if (size <= 0) {size = 5;}
+        if (size > 100) {size = 100;}
 
-        return treatments.stream()
+        int offset = page * size;
+
+        long totalElements =
+                treatmentMapper.countTreatmentsByCustomerIdAndDesignerId(customerId, designerId);
+
+        List<TreatmentDto> treatments =
+                treatmentMapper.selectTreatmentsByCustomerIdAndDesignerId(customerId, designerId, offset, size);
+
+        List<TreatmentResponseDto> content = treatments.stream()
                 .map(t -> TreatmentResponseDto.builder()
                         .id(t.getId())
                         .treatmentDate(t.getTreatmentDate())
@@ -56,6 +60,18 @@ public class TreatmentServiceImpl implements TreatmentService {
                         .styleName(t.getStyleName())
                         .build())
                 .toList();
+
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+
+        return TreatmentPageResponseDto.builder()
+                .content(content)
+                .page(page)
+                .size(size)
+                .totalElements(totalElements)
+                .totalPages(totalPages)
+                .first(page == 0)
+                .last(page >= totalPages - 1)
+                .build();
     }
 
     @Override
@@ -123,9 +139,7 @@ public class TreatmentServiceImpl implements TreatmentService {
             throw new IllegalArgumentException("해당 시술 이력을 찾을 수 없습니다.");
         }
 
-        String treatmentPrefix =
-                treatment.getCustomerId() + "/" + treatmentId + "/";
-
+        String treatmentPrefix = treatment.getCustomerId() + "/" + treatmentId + "/";
         s3Service.deleteObjectsByPrefix(treatmentPrefix);
 
         int deleted = treatmentMapper.deleteTreatmentByIdAndDesignerId(treatmentId, designerId);

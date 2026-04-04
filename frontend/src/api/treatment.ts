@@ -3,7 +3,7 @@ import type {
   TreatmentCreateRequestDto,
   TreatmentCreateResponseDto,
   TreatmentDetailResponseDto,
-  TreatmentResponseDto,
+  TreatmentPageResponseDto,
   TreatmentUpdateRequestDto,
 } from "../types/treatment";
 
@@ -15,9 +15,13 @@ export const createTreatmentApi = async (
 };
 
 export const getTreatmentsByCustomerApi = async (
-  customerId: number
-): Promise<TreatmentResponseDto[]> => {
-  const response = await api.get(`/customers/${customerId}/treatments`);
+  customerId: number,
+  page: number,
+  size: number
+): Promise<TreatmentPageResponseDto> => {
+  const response = await api.get(`/customers/${customerId}/treatments`, {
+    params: { page, size },
+  });
   return response.data;
 };
 
