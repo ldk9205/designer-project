@@ -60,6 +60,14 @@
         WHERE customer_id = #{customerId}
         AND designer_id = #{designerId}
         ORDER BY treatment_date DESC, treatment_time DESC, id DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="countTreatmentsByCustomerIdAndDesignerId" resultType="long">
+        SELECT COUNT(*)
+        FROM treatments
+        WHERE customer_id = #{customerId}
+        AND designer_id = #{designerId}
     </select>
 
     <!-- 시술 단건 조회 -->

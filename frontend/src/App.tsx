@@ -45,30 +45,14 @@ export default function App() {
             {/* 고객 관리 */}
             <Route path="/customers" element={<CustomerListPage />} />
             <Route path="/customers/new" element={<CustomerCreatePage />} />
-            <Route
-              path="/customers/:customerId"
-              element={<CustomerDetailPage />}
-            />
-            <Route
-              path="/customers/:customerId/edit"
-              element={<CustomerEditPage />}
-            />
-            <Route
-              path="/customers/:customerId/treatments"
-              element={<CustomerTreatmentListPage />}
-            />
-            <Route
-              path="/customers/:customerId/treatments/new"
-              element={<TreatmentCreatePage />}
-            />
-            <Route
-              path="/customers/:customerId/treatments/:treatmentId"
-              element={<TreatmentDetailPage />}
-            />
-            <Route
-              path="/customers/:customerId/treatments/:treatmentId/edit"
-              element={<TreatmentEditPage />}
-            />
+            <Route path="/customers/:customerId" element={<CustomerDetailPage />} />
+            <Route path="/customers/:customerId/edit" element={<CustomerEditPage />} />
+            
+            {/* 고객 시술 이력 */}
+            <Route path="/customers/:customerId/treatments" element={<CustomerTreatmentListPage />} />
+            <Route path="/customers/:customerId/treatments/new" element={<TreatmentCreatePage />} />
+            <Route path="/customers/:customerId/treatments/:treatmentId" element={<TreatmentDetailPage />} />
+            <Route path="/customers/:customerId/treatments/:treatmentId/edit" element={<TreatmentEditPage />} />
 
             {/* 커뮤니티 */}
             <Route path="/community/write" element={<WritePostPage />} />

@@ -1,18 +1,12 @@
 package com.designer.treatment.service;
 
-import com.designer.treatment.dto.TreatmentCreateRequestDto;
-import com.designer.treatment.dto.TreatmentCreateResponseDto;
-import com.designer.treatment.dto.TreatmentDetailResponseDto;
-import com.designer.treatment.dto.TreatmentResponseDto;
-import com.designer.treatment.dto.TreatmentUpdateRequestDto;
-
-import java.util.List;
+import com.designer.treatment.dto.*;
 
 public interface TreatmentService {
 
     TreatmentCreateResponseDto createTreatment(Long designerId, TreatmentCreateRequestDto dto);
 
-    List<TreatmentResponseDto> getTreatmentsByCustomer(Long designerId, Long customerId);
+    TreatmentPageResponseDto getTreatmentsByCustomer(Long designerId, Long customerId, int page, int size);
 
     TreatmentDetailResponseDto getTreatmentDetail(Long designerId, Long treatmentId);
 
