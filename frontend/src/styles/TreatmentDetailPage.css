@@ -71,6 +71,15 @@
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.treatment-detail-image-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
 
 .treatment-detail-image-item img {
@@ -84,6 +93,9 @@
   padding: 10px;
   font-size: 13px;
   color: #374151;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .treatment-detail-actions {
@@ -93,7 +105,6 @@
   margin-top: 24px;
 }
 
-/* 공통 버튼 스타일 */
 .treatment-detail-back,
 .treatment-detail-edit,
 .treatment-detail-delete {
@@ -108,7 +119,6 @@
   box-shadow: none;
 }
 
-/* 목록으로: secondary */
 .treatment-detail-back {
   background: #e5e7eb;
   color: #111827;
@@ -122,7 +132,6 @@
   transform: scale(0.97);
 }
 
-/* 수정: primary blue */
 .treatment-detail-edit {
   background: #2563eb;
   color: #ffffff;
@@ -136,7 +145,6 @@
   transform: scale(0.97);
 }
 
-/* 삭제: danger red */
 .treatment-detail-delete {
   background: #dc2626;
   color: #ffffff;
@@ -154,4 +162,95 @@
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
+}
+
+/* 이미지 확대 모달 */
+.image-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 9999;
+}
+
+.image-modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px 16px 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.image-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 9999px;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+}
+
+.image-modal-close:hover {
+  background: #dc2626;
+}
+
+.image-modal-img {
+  max-width: 100%;
+  max-height: calc(90vh - 80px);
+  object-fit: contain;
+  border-radius: 12px;
+  display: block;
+}
+
+.image-modal-caption {
+  font-size: 14px;
+  color: #374151;
+  text-align: center;
+  word-break: break-all;
+}
+
+@media (max-width: 768px) {
+  .treatment-detail-page {
+    padding: 0 16px 16px;
+  }
+
+  .treatment-detail-card {
+    padding: 18px;
+  }
+
+  .treatment-detail-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .treatment-detail-row .label {
+    width: auto;
+  }
+
+  .image-modal-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 14px 10px;
+  }
 }

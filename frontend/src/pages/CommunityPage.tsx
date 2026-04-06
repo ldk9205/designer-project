@@ -51,27 +51,27 @@ export default function CommunityPage() {
   return (
     <div className="community-wrapper">
       <Header />
-      
-      <div className="community-top-bar">
-        <button
-          type="button"
-          className="community-back-btn"
-          onClick={() => navigate("/home")}
-        >
-          ← 이전으로
-        </button>
-      </div>
 
       <div className="community-header">
         <h2>💬 커뮤니티</h2>
 
-        <button
-          type="button"
-          className="community-write-btn"
-          onClick={() => navigate("/community/write")}
-        >
-          글쓰기
-        </button>
+        <div className="community-header-actions">
+          <button
+            type="button"
+            className="community-home-btn"
+            onClick={() => navigate("/home")}
+          >
+            홈으로
+          </button>
+
+          <button
+            type="button"
+            className="community-write-btn"
+            onClick={() => navigate("/community/write")}
+          >
+            글쓰기
+          </button>
+        </div>
       </div>
 
       {posts.length === 0 && (
@@ -88,7 +88,8 @@ export default function CommunityPage() {
             <div className="post-title">{post.title}</div>
 
             <div className="post-meta">
-              {post.designerName ?? "익명"} · {formatRelativeTime(post.createdAt)}
+              {post.designerName ?? "익명"} ·{" "}
+              {formatRelativeTime(post.createdAt)}
             </div>
 
             <div className="post-preview">

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  deleteTreatmentApi,
-  getTreatmentDetailApi,
-} from "../api/treatment";
-import type { TreatmentDetailResponseDto } from "../types/treatment";
+import { deleteTreatmentApi, getTreatmentDetailApi } from "../api/treatment";
+import type {
+  TreatmentDetailResponseDto,
+  ImageResponseDto,
+} from "../types/treatment";
 import Header from "../components/Header";
 import "../styles/TreatmentDetailPage.css";
 
@@ -15,10 +15,16 @@ export default function TreatmentDetailPage() {
   const numericCustomerId = Number(customerId);
   const numericTreatmentId = Number(treatmentId);
 
-  const [treatment, setTreatment] = useState<TreatmentDetailResponseDto | null>(null);
+  const [treatment, setTreatment] = useState<TreatmentDetailResponseDto | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
+
+  const [selectedImage, setSelectedImage] = useState<ImageResponseDto | null>(
+    null,
+  );
 
   useEffect(() => {
     const loadTreatment = async () => {
@@ -30,9 +36,7 @@ export default function TreatmentDetailPage() {
         setTreatment(data);
       } catch (err: any) {
         setError(
-          err?.response?.data?.message ||
-            err?.message ||
-            "시술 상세 조회 실패"
+          err?.response?.data?.message || err?.message || "시술 상세 조회 실패",
         );
       } finally {
         setLoading(false);
@@ -53,6 +57,24 @@ export default function TreatmentDetailPage() {
     void loadTreatment();
   }, [numericCustomerId, numericTreatmentId]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSelectedImage(null);
+      }
+    };
+
+    if (selectedImage) {
+      document.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [selectedImage]);
+
   const onDelete = async () => {
     if (!treatment) return;
 
@@ -66,13 +88,19 @@ export default function TreatmentDetailPage() {
       navigate(`/customers/${treatment.customerId}/treatments`);
     } catch (err: any) {
       alert(
-        err?.response?.data?.message ||
-          err?.message ||
-          "시술 이력 삭제 실패"
+        err?.response?.data?.message || err?.message || "시술 이력 삭제 실패",
       );
     } finally {
       setDeleting(false);
     }
+  };
+
+  const openImageModal = (image: ImageResponseDto) => {
+    setSelectedImage(image);
+  };
+
+  const closeImageModal = () => {
+    setSelectedImage(null);
   };
 
   if (loading) {
@@ -90,7 +118,7 @@ export default function TreatmentDetailPage() {
   return (
     <div className="treatment-detail-page">
       <Header />
-      
+
       <div className="treatment-detail-card">
         <div className="treatment-detail-header">
           <h1 className="treatment-detail-title">시술 상세 이력</h1>
@@ -133,7 +161,12 @@ export default function TreatmentDetailPage() {
             ) : (
               <div className="treatment-detail-image-list">
                 {treatment.images.map((image) => (
-                  <div key={image.id} className="treatment-detail-image-item">
+                  <button
+                    key={image.id}
+                    type="button"
+                    className="treatment-detail-image-item"
+                    onClick={() => openImageModal(image)}
+                  >
                     <img
                       src={image.imageUrl}
                       alt={image.originalName || "시술 이미지"}
@@ -141,7 +174,7 @@ export default function TreatmentDetailPage() {
                     <div className="treatment-detail-image-name">
                       {image.originalName || "이미지"}
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             )}
@@ -152,7 +185,9 @@ export default function TreatmentDetailPage() {
           <button
             type="button"
             className="treatment-detail-back"
-            onClick={() => navigate(`/customers/${treatment.customerId}/treatments`)}
+            onClick={() =>
+              navigate(`/customers/${treatment.customerId}/treatments`)
+            }
           >
             목록으로
           </button>
@@ -161,7 +196,9 @@ export default function TreatmentDetailPage() {
             type="button"
             className="treatment-detail-edit"
             onClick={() =>
-              navigate(`/customers/${treatment.customerId}/treatments/${numericTreatmentId}/edit`)
+              navigate(
+                `/customers/${treatment.customerId}/treatments/${numericTreatmentId}/edit`,
+              )
             }
           >
             수정
@@ -177,6 +214,34 @@ export default function TreatmentDetailPage() {
           </button>
         </div>
       </div>
+
+      {selectedImage && (
+        <div className="image-modal-overlay" onClick={closeImageModal}>
+          <div
+            className="image-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="image-modal-close"
+              onClick={closeImageModal}
+              aria-label="이미지 닫기"
+            >
+              x
+            </button>
+
+            <img
+              className="image-modal-img"
+              src={selectedImage.imageUrl}
+              alt={selectedImage.originalName || "확대 이미지"}
+            />
+
+            <div className="image-modal-caption">
+              {selectedImage.originalName || "이미지"}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
