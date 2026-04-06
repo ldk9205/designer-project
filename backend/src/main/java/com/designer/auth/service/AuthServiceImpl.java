@@ -148,6 +148,15 @@ public class AuthServiceImpl implements AuthService {
         return authMapper.findById(designerId);
     }
 
+    @Override
+    public DesignerDto updateMe(Long designerId, DesignerUpdateRequestDto dto) {
+        int updated = authMapper.updateProfileById(designerId, dto);
+        if (updated == 0) {
+            throw new IllegalArgumentException("내 정보 수정에 실패했습니다.");
+        }
+        return authMapper.findById(designerId);
+    }
+
     // 회원 탈퇴 : designers 삭제. 해당 디자이너 refresh token 전체 폐기
     @Override
     public void deleteMe(Long designerId) {

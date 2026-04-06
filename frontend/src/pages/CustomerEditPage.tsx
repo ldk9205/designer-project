@@ -5,6 +5,7 @@ import type {
   CustomerResponseDto,
   CustomerUpdateRequestDto,
 } from "../types/customer";
+import Header from "../components/Header";
 import "../styles/CustomerEditPage.css";
 
 export default function CustomerEditPage() {
@@ -112,6 +113,7 @@ export default function CustomerEditPage() {
   if (loading) {
     return (
       <div className="customer-edit-page">
+        <Header />
         <div className="customer-edit-card">
           <div className="customer-edit-loading">불러오는 중...</div>
         </div>
@@ -121,6 +123,7 @@ export default function CustomerEditPage() {
 
   return (
     <div className="customer-edit-page">
+      <Header />
       <div className="customer-edit-card">
         <h1 className="customer-edit-title">고객 수정</h1>
         <p className="customer-edit-subtitle">고객 정보를 수정해주세요</p>

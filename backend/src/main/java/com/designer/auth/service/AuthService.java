@@ -23,6 +23,8 @@ public interface AuthService {
     
     // 내 정보 조회 : designerId 기준
     DesignerDto getMe(Long designerId);
+
+    DesignerDto updateMe(Long designerId, DesignerUpdateRequestDto dto);
     
     // 회원 탈퇴 : designers 삭제 + refresh token 전체 폐기
     void deleteMe(Long designerId);

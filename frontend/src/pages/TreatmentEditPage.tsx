@@ -9,6 +9,7 @@ import type {
   ImageResponseDto,
   TreatmentUpdateRequestDto,
 } from "../types/treatment";
+import Header from "../components/Header";
 import "../styles/TreatmentEditPage.css";
 
 type PreviewFile = {
@@ -160,6 +161,8 @@ export default function TreatmentEditPage() {
 
   return (
     <div className="treatment-edit-page">
+      <Header />
+      
       <div className="treatment-edit-card">
         <div className="treatment-edit-header">
           <h1 className="treatment-edit-title">시술 이력 수정</h1>

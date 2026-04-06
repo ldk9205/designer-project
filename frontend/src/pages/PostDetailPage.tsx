@@ -12,6 +12,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { formatRelativeTime } from "../utils/time";
+import Header from "../components/Header";
 import "../styles/PostDetailPage.css";
 
 export default function PostDetailPage() {
@@ -182,6 +183,7 @@ export default function PostDetailPage() {
 
   return (
     <div className="post-detail-wrapper">
+      <Header />
       <div className="post-detail-top-bar">
         <button
           type="button"

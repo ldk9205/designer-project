@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { deleteCustomerApi, getCustomersApi } from "../api/customer";
 import type { CustomerResponseDto } from "../types/customer";
+import Header from "../components/Header";
 import "../styles/CustomerListPage.css";
 
 const PAGE_SIZE = 5;
@@ -88,6 +89,8 @@ export default function CustomerListPage() {
 
   return (
     <div className="customer-list-page">
+      <Header />
+      
       <div className="customer-list-card">
         <div className="customer-list-header">
           <div className="customer-list-title-wrap">

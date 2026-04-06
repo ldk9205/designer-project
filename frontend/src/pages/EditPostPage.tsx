@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { getPost, updatePost, type Post } from "../api/boardApi";
+import Header from "../components/Header";
 import "../styles/EditPostPage.css";
 
 export default function EditPostPage() {
@@ -109,6 +110,8 @@ export default function EditPostPage() {
 
   return (
     <div className="edit-post-wrapper">
+      <Header />
+      
       <div className="edit-post-top-bar">
         <button
           type="button"

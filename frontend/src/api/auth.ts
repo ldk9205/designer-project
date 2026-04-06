@@ -8,6 +8,19 @@ export type Designer = {
   createdAt: string;
 };
 
+export type DesignerUpdateRequestDto = {
+  name: string;
+  phone: string;
+};
+
+export type DesignerDto = {
+  id: number;
+  email: string;
+  name: string;
+  phone: string;
+  createdAt: string;
+};
+
 export type AuthResponse = {
   accessToken: string;
   designer: Designer;
@@ -36,4 +49,9 @@ export type SignupRequest = {
 
 export async function signupApi(payload: SignupRequest) {
   await api.post('/auth/signup', payload);
+}
+
+export async function updateMeApi(body: DesignerUpdateRequestDto): Promise<DesignerDto> {
+  const { data } = await api.put("/auth/me", body);
+  return data;
 }

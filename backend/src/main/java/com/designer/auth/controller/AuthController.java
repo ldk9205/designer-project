@@ -107,6 +107,14 @@ public class AuthController {
         return ResponseEntity.ok(authService.getMe(designerId));
     }
 
+    @PutMapping("/me")
+    public ResponseEntity<DesignerDto> updateMe(
+            @RequestAttribute("designerId") Long designerId,
+            @Valid @RequestBody DesignerUpdateRequestDto dto
+    ) {
+        return ResponseEntity.ok(authService.updateMe(designerId, dto));
+    }
+
     // 회원 탈퇴
     // 입력 : @RequestAttribute("designerId") (JWT 인증된 사용자)
     // 처리 : designers 삭제 + refresh 토큰 전체 revoke

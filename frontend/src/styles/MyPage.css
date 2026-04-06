@@ -4,10 +4,11 @@
 .mypage-wrapper {
   min-height: 100vh;
   background: #f3f4f6;
-  padding: 40px 20px;
+  padding: 0 20px 40px;
   display: flex;
-  justify-content: center;
-  font-family: 'Segoe UI', sans-serif;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;
 }
 
 /* =========================
@@ -19,8 +20,8 @@
   background: white;
   border-radius: 20px;
   padding: 32px;
-
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  margin-top: 40px;
 }
 
 /* =========================
@@ -47,6 +48,8 @@
 .mypage-info-item {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 16px;
   border-bottom: 1px solid #f1f1f1;
   padding-bottom: 6px;
 }
@@ -54,6 +57,26 @@
 .mypage-label {
   font-weight: 600;
   color: #6b7280;
+}
+
+/* =========================
+   입력창
+========================= */
+.mypage-input {
+  width: 220px;
+  padding: 8px 10px;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* =========================
+   메시지
+========================= */
+.mypage-message {
+  margin-top: 14px;
+  font-size: 14px;
+  color: #111827;
 }
 
 /* =========================
@@ -65,7 +88,6 @@
   gap: 12px;
 }
 
-/* 공통 버튼 스타일 */
 .mypage-btn {
   flex: 1;
   padding: 10px 14px;
@@ -75,6 +97,41 @@
   font-weight: 600;
   font-size: 13px;
   transition: all 0.2s ease;
+}
+
+.mypage-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 수정하기 버튼 */
+.mypage-btn-edit {
+  background: #2563eb;
+  color: white;
+}
+
+.mypage-btn-edit:hover {
+  background: #1d4ed8;
+}
+
+/* 저장 버튼 */
+.mypage-btn-save {
+  background: #059669;
+  color: white;
+}
+
+.mypage-btn-save:hover {
+  background: #047857;
+}
+
+/* 취소 버튼 */
+.mypage-btn-cancel {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.mypage-btn-cancel:hover {
+  background: #d1d5db;
 }
 
 /* 새로고침 버튼 */
@@ -97,15 +154,22 @@
   background: #d1d5db;
 }
 
+.mypage-btn-edit,
+.mypage-btn-save,
+.mypage-btn-cancel {
+  min-width: 100px;
+}
+
 /* =========================
    모바일 대응
 ========================= */
 @media (max-width: 480px) {
   .mypage-wrapper {
-    padding: 20px 15px;
+    padding: 0 15px 20px;
   }
 
   .mypage-card {
+    margin-top: 20px;
     padding: 20px;
   }
 
@@ -115,5 +179,17 @@
 
   .mypage-info {
     font-size: 13px;
+  }
+
+  .mypage-info-item {
+    align-items: flex-start;
+  }
+
+  .mypage-input {
+    width: 160px;
+  }
+
+  .mypage-actions {
+    flex-direction: column;
   }
 }

@@ -3,6 +3,7 @@ import {
   requestUploadPresignedUrl,
   uploadFileToS3,
 } from "../api/fileApi";
+import Header from "../components/Header";
 
 export default function UploadPage() {
   const [treatmentId, setTreatmentId] = useState<string>("");

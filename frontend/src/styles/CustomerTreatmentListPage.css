@@ -1,12 +1,12 @@
 .customer-treatment-page {
   min-height: 100vh;
-  padding: 24px;
+  padding: 0 24px 24px;
   background: #f7f8fa;
 }
 
 .customer-treatment-card {
   max-width: 1100px;
-  margin: 0 auto;
+  margin: 24px auto 0;
   background: #ffffff;
   border-radius: 16px;
   padding: 24px;
@@ -79,6 +79,65 @@
   background: #1f2937;
 }
 
+.customer-treatment-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.customer-treatment-search-input {
+  flex: 1;
+  min-width: 220px;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #111827;
+  background: #ffffff;
+}
+
+.customer-treatment-search-input:focus {
+  outline: none;
+  border-color: #9ca3af;
+}
+
+.customer-treatment-search-button,
+.customer-treatment-reset-button {
+  border: none;
+  border-radius: 10px;
+  height: 42px;
+  padding: 0 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+.customer-treatment-search-button {
+  background: #111827;
+  color: #ffffff;
+}
+
+.customer-treatment-search-button:hover {
+  background: #1f2937;
+}
+
+.customer-treatment-reset-button {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.customer-treatment-reset-button:hover {
+  background: #d1d5db;
+}
+
+.customer-treatment-search-button:active,
+.customer-treatment-reset-button:active {
+  transform: scale(0.97);
+}
+
 .customer-treatment-empty {
   padding: 40px 0;
   text-align: center;
@@ -108,6 +167,20 @@
   background: #f9fafb;
   font-weight: 600;
   color: #374151;
+}
+
+.customer-treatment-sort-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+}
+
+.customer-treatment-sort-button:hover {
+  color: #111827;
 }
 
 .customer-treatment-row-actions {
@@ -216,7 +289,10 @@
 .customer-treatment-delete-button,
 .customer-treatment-create-button,
 .customer-treatment-page-nav-button,
-.customer-treatment-page-number-button {
+.customer-treatment-page-number-button,
+.customer-treatment-search-button,
+.customer-treatment-reset-button,
+.customer-treatment-sort-button {
   outline: none;
   box-shadow: none;
 }
@@ -235,7 +311,16 @@
 .customer-treatment-page-nav-button:focus-visible,
 .customer-treatment-page-number-button:focus,
 .customer-treatment-page-number-button:active,
-.customer-treatment-page-number-button:focus-visible {
+.customer-treatment-page-number-button:focus-visible,
+.customer-treatment-search-button:focus,
+.customer-treatment-search-button:active,
+.customer-treatment-search-button:focus-visible,
+.customer-treatment-reset-button:focus,
+.customer-treatment-reset-button:active,
+.customer-treatment-reset-button:focus-visible,
+.customer-treatment-sort-button:focus,
+.customer-treatment-sort-button:active,
+.customer-treatment-sort-button:focus-visible {
   outline: none;
   box-shadow: none;
   filter: none;
@@ -243,10 +328,11 @@
 
 @media (max-width: 768px) {
   .customer-treatment-page {
-    padding: 16px;
+    padding: 0 16px 16px;
   }
 
   .customer-treatment-card {
+    margin-top: 16px;
     padding: 18px;
   }
 
@@ -256,6 +342,17 @@
 
   .customer-treatment-row-actions {
     flex-direction: column;
+  }
+
+  .customer-treatment-search-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .customer-treatment-search-input,
+  .customer-treatment-search-button,
+  .customer-treatment-reset-button {
+    width: 100%;
   }
 
   .customer-treatment-page-nav-button,

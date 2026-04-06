@@ -33,4 +33,12 @@
         SELECT COUNT(*) FROM designers WHERE email = #{email}
     </select>
 
+    <update id="updateProfileById">
+        UPDATE designers
+        SET
+        name = #{dto.name},
+        phone = #{dto.phone}
+        WHERE id = #{id}
+    </update>
+
 </mapper>

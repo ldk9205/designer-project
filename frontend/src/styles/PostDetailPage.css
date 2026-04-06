@@ -1,6 +1,6 @@
 .post-detail-wrapper {
   max-width: 800px;
-  margin: 50px auto;
+  margin: 0 auto 50px;
   padding: 0 20px;
 }
 
@@ -170,6 +170,7 @@ button:disabled {
 }
 
 .post-detail-top-bar {
+  margin-top: 50px;
   margin-bottom: 16px;
 }
 

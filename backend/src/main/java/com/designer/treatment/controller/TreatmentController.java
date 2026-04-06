@@ -30,10 +30,19 @@ public class TreatmentController {
             @RequestAttribute("designerId") Long designerId,
             @PathVariable Long customerId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(required = false) String category,
+            @RequestParam(defaultValue = "desc") String sortDirection
     ) {
         return ResponseEntity.ok(
-                treatmentService.getTreatmentsByCustomer(designerId, customerId, page, size)
+                treatmentService.getTreatmentsByCustomer(
+                        designerId,
+                        customerId,
+                        page,
+                        size,
+                        category,
+                        sortDirection
+                )
         );
     }
 

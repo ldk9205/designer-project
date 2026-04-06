@@ -1,12 +1,12 @@
 .treatment-edit-page {
   min-height: 100vh;
-  padding: 24px;
+  padding: 0 24px 24px;
   background: #f7f8fa;
 }
 
 .treatment-edit-card {
   max-width: 720px;
-  margin: 0 auto;
+  margin: 24px auto 0;
   background: #ffffff;
   border-radius: 16px;
   padding: 24px;
@@ -67,7 +67,7 @@
 }
 
 .treatment-edit-cancel {
-  background:#374151;;
+  background: #374151;
 }
 
 .treatment-edit-submit {

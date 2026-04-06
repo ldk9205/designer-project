@@ -1,8 +1,6 @@
 package com.designer.auth.mapper;
 
-import com.designer.auth.dto.DesignerDto;
-import com.designer.auth.dto.DesignerAuthDto;
-import com.designer.auth.dto.SignupRequestDto;
+import com.designer.auth.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,4 +21,6 @@ public interface AuthMapper {
 
     // 회원가입용: 이메일 중복 체크
     int countByEmail(@Param("email") String email);
+
+    int updateProfileById(@Param("id") Long id, @Param("dto") DesignerUpdateRequestDto dto);
 }

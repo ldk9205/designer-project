@@ -5,6 +5,7 @@ import {
   getTreatmentsByCustomerApi,
 } from "../api/treatment";
 import type { TreatmentResponseDto } from "../types/treatment";
+import Header from "../components/Header";
 import "../styles/CustomerTreatmentListPage.css";
 
 const PAGE_SIZE = 5;
@@ -24,7 +25,15 @@ export default function CustomerTreatmentListPage() {
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
 
-  const loadTreatments = async (targetPage: number) => {
+  const [categoryInput, setCategoryInput] = useState("");
+  const [categoryKeyword, setCategoryKeyword] = useState("");
+  const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
+
+  const loadTreatments = async (
+    targetPage: number,
+    targetCategory: string = categoryKeyword,
+    targetSortDirection: "desc" | "asc" = sortDirection
+  ) => {
     try {
       setLoading(true);
       setError("");
@@ -32,7 +41,9 @@ export default function CustomerTreatmentListPage() {
       const data = await getTreatmentsByCustomerApi(
         numericCustomerId,
         targetPage,
-        PAGE_SIZE
+        PAGE_SIZE,
+        targetCategory,
+        targetSortDirection
       );
 
       setTreatments(data.content);
@@ -57,8 +68,27 @@ export default function CustomerTreatmentListPage() {
       return;
     }
 
-    void loadTreatments(0);
+    void loadTreatments(0, "", "desc");
   }, [numericCustomerId]);
+
+  const onSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const keyword = categoryInput.trim();
+    setCategoryKeyword(keyword);
+    await loadTreatments(0, keyword, sortDirection);
+  };
+
+  const onResetSearch = async () => {
+    setCategoryInput("");
+    setCategoryKeyword("");
+    await loadTreatments(0, "", sortDirection);
+  };
+
+  const onToggleDateSort = async () => {
+    const nextSortDirection = sortDirection === "desc" ? "asc" : "desc";
+    setSortDirection(nextSortDirection);
+    await loadTreatments(0, categoryKeyword, nextSortDirection);
+  };
 
   const onDelete = async (treatmentId: number) => {
     const ok = window.confirm("정말 이 시술 이력을 삭제하시겠습니까?");
@@ -69,10 +99,9 @@ export default function CustomerTreatmentListPage() {
       alert("시술 이력이 삭제되었습니다.");
 
       const isLastItemOnPage = treatments.length === 1;
-      const nextPage =
-        isLastItemOnPage && page > 0 ? page - 1 : page;
+      const nextPage = isLastItemOnPage && page > 0 ? page - 1 : page;
 
-      await loadTreatments(nextPage);
+      await loadTreatments(nextPage, categoryKeyword, sortDirection);
     } catch (err: any) {
       alert(
         err?.response?.data?.message ||
@@ -103,6 +132,8 @@ export default function CustomerTreatmentListPage() {
 
   return (
     <div className="customer-treatment-page">
+      <Header />
+      
       <div className="customer-treatment-card">
         <div className="customer-treatment-header">
           <div className="customer-treatment-title-wrap">
@@ -131,6 +162,29 @@ export default function CustomerTreatmentListPage() {
           </div>
         </div>
 
+        <form className="customer-treatment-search-bar" onSubmit={onSearch}>
+          <input
+            type="text"
+            value={categoryInput}
+            onChange={(e) => setCategoryInput(e.target.value)}
+            placeholder="카테고리를 입력하세요"
+            className="customer-treatment-search-input"
+          />
+          <button
+            type="submit"
+            className="customer-treatment-search-button"
+          >
+            검색
+          </button>
+          <button
+            type="button"
+            className="customer-treatment-reset-button"
+            onClick={onResetSearch}
+          >
+            전체보기
+          </button>
+        </form>
+
         {!hasTreatments ? (
           <div className="customer-treatment-empty">
             등록된 시술 이력이 없습니다.
@@ -141,7 +195,15 @@ export default function CustomerTreatmentListPage() {
               <table className="customer-treatment-table">
                 <thead>
                   <tr>
-                    <th>날짜</th>
+                    <th>
+                      <button
+                        type="button"
+                        className="customer-treatment-sort-button"
+                        onClick={onToggleDateSort}
+                      >
+                        날짜 {sortDirection === "desc" ? "▼" : "▲"}
+                      </button>
+                    </th>
                     <th>시간</th>
                     <th>카테고리</th>
                     <th>스타일명</th>
@@ -188,7 +250,9 @@ export default function CustomerTreatmentListPage() {
                 <button
                   type="button"
                   className="customer-treatment-page-nav-button"
-                  onClick={() => loadTreatments(0)}
+                  onClick={() =>
+                    loadTreatments(0, categoryKeyword, sortDirection)
+                  }
                   disabled={page === 0}
                 >
                   처음
@@ -197,7 +261,9 @@ export default function CustomerTreatmentListPage() {
                 <button
                   type="button"
                   className="customer-treatment-page-nav-button"
-                  onClick={() => loadTreatments(startPage - 1)}
+                  onClick={() =>
+                    loadTreatments(startPage - 1, categoryKeyword, sortDirection)
+                  }
                   disabled={startPage === 0}
                 >
                   이전
@@ -211,7 +277,9 @@ export default function CustomerTreatmentListPage() {
                       className={`customer-treatment-page-number-button ${
                         pageNumber === page ? "active" : ""
                       }`}
-                      onClick={() => loadTreatments(pageNumber)}
+                      onClick={() =>
+                        loadTreatments(pageNumber, categoryKeyword, sortDirection)
+                      }
                     >
                       {pageNumber + 1}
                     </button>
@@ -221,7 +289,9 @@ export default function CustomerTreatmentListPage() {
                 <button
                   type="button"
                   className="customer-treatment-page-nav-button"
-                  onClick={() => loadTreatments(endPage)}
+                  onClick={() =>
+                    loadTreatments(endPage, categoryKeyword, sortDirection)
+                  }
                   disabled={endPage >= totalPages}
                 >
                   다음
@@ -230,7 +300,9 @@ export default function CustomerTreatmentListPage() {
                 <button
                   type="button"
                   className="customer-treatment-page-nav-button"
-                  onClick={() => loadTreatments(totalPages - 1)}
+                  onClick={() =>
+                    loadTreatments(totalPages - 1, categoryKeyword, sortDirection)
+                  }
                   disabled={page >= totalPages - 1}
                 >
                   마지막

@@ -38,18 +38,36 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     @Override
     @Transactional(readOnly = true)
-    public TreatmentPageResponseDto getTreatmentsByCustomer(Long designerId, Long customerId, int page, int size) {
+    public TreatmentPageResponseDto getTreatmentsByCustomer(Long designerId, Long customerId, int page, int size, String category, String sortDirection) {
         if (page < 0) {page = 0;}
         if (size <= 0) {size = 5;}
         if (size > 100) {size = 100;}
 
+        String normalizedCategory = category == null ? null : category.trim();
+        if (normalizedCategory != null && normalizedCategory.isEmpty()) {
+            normalizedCategory = null;
+        }
+
+        String normalizedSortDirection =
+                "asc".equalsIgnoreCase(sortDirection) ? "asc" : "desc";
+
         int offset = page * size;
 
-        long totalElements =
-                treatmentMapper.countTreatmentsByCustomerIdAndDesignerId(customerId, designerId);
+        long totalElements = treatmentMapper.countTreatmentsByCustomerIdAndDesignerId(
+                customerId,
+                designerId,
+                normalizedCategory
+        );
 
         List<TreatmentDto> treatments =
-                treatmentMapper.selectTreatmentsByCustomerIdAndDesignerId(customerId, designerId, offset, size);
+                treatmentMapper.selectTreatmentsByCustomerIdAndDesignerId(
+                        customerId,
+                        designerId,
+                        normalizedCategory,
+                        normalizedSortDirection,
+                        offset,
+                        size
+                );
 
         List<TreatmentResponseDto> content = treatments.stream()
                 .map(t -> TreatmentResponseDto.builder()
@@ -70,7 +88,7 @@ public class TreatmentServiceImpl implements TreatmentService {
                 .totalElements(totalElements)
                 .totalPages(totalPages)
                 .first(page == 0)
-                .last(page >= totalPages - 1)
+                .last(totalPages == 0 || page >= totalPages - 1)
                 .build();
     }
 
