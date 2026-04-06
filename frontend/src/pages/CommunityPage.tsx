@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getPosts, Post } from "../api/boardApi";
 import { useNavigate } from "react-router-dom";
 import { formatRelativeTime } from "../utils/time";
+import Header from "../components/Header";
 import "../styles/CommunityPage.css";
 
 export default function CommunityPage() {
@@ -41,6 +42,7 @@ export default function CommunityPage() {
   if (loading) {
     return (
       <div className="community-wrapper">
+        <Header />
         <p className="loading-text">로딩 중...</p>
       </div>
     );
@@ -48,6 +50,8 @@ export default function CommunityPage() {
 
   return (
     <div className="community-wrapper">
+      <Header />
+      
       <div className="community-top-bar">
         <button
           type="button"

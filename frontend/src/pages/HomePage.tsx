@@ -35,16 +35,6 @@ export default function HomePage() {
           👥 고객 관리
         </div>
 
-        <div
-          className="card"
-          role="button"
-          tabIndex={0}
-          onClick={() => go("/reservations")}
-          onKeyDown={(e) => e.key === "Enter" && go("/reservations")}
-        >
-          📅 예약 현황
-        </div>
-
       </main>
     </div>
   );

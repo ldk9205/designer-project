@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getCustomerApi } from "../api/customer";
 import type { CustomerResponseDto } from "../types/customer";
+import Header from "../components/Header";
 import "../styles/CustomerDetailPage.css";
 
 export default function CustomerDetailPage() {
@@ -53,6 +54,7 @@ export default function CustomerDetailPage() {
   if (loading) {
     return (
       <div className="customer-detail-page">
+        <Header />
         <div className="customer-detail-card">
           <div className="customer-detail-loading">불러오는 중...</div>
         </div>
@@ -63,6 +65,7 @@ export default function CustomerDetailPage() {
   if (error) {
     return (
       <div className="customer-detail-page">
+        <Header />
         <div className="customer-detail-card">
           <div className="customer-detail-error">{error}</div>
         </div>
@@ -73,6 +76,7 @@ export default function CustomerDetailPage() {
   if (!customer) {
     return (
       <div className="customer-detail-page">
+        <Header />
         <div className="customer-detail-card">
           <div className="customer-detail-empty">고객 정보가 없습니다.</div>
         </div>
@@ -82,6 +86,8 @@ export default function CustomerDetailPage() {
 
   return (
     <div className="customer-detail-page">
+      <Header />
+      
       <div className="customer-detail-card">
         <h1 className="customer-detail-title">고객 상세</h1>
         <p className="customer-detail-subtitle">고객 정보를 확인하세요</p>

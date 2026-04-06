@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { signupApi } from '../api/auth';
+import Header from "../components/Header";
 import '../styles/SignupPage.css';
 
 export default function SignupPage() {
@@ -76,6 +77,8 @@ export default function SignupPage() {
 
   return (
     <div className="signup-page">
+      <Header />
+      
       <div className="signup-card">
         <h1 className="signup-title">회원가입</h1>
         <p className="signup-subtitle">디자이너 계정 생성</p>

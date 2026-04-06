@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createPost } from "../api/boardApi";
 import { useNavigate } from "react-router-dom";
-
+import Header from "../components/Header";
 import "../styles/WritePostPage.css";
 
 export default function WritePostPage() {
@@ -28,6 +28,8 @@ export default function WritePostPage() {
 
   return (
     <div className="write-wrapper">
+      <Header />
+      
       <div className="write-card">
         <div className="write-title">게시글 작성</div>
 

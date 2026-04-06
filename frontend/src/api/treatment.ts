@@ -17,11 +17,19 @@ export const createTreatmentApi = async (
 export const getTreatmentsByCustomerApi = async (
   customerId: number,
   page: number,
-  size: number
+  size: number,
+  category?: string,
+  sortDirection: "desc" | "asc" = "desc"
 ): Promise<TreatmentPageResponseDto> => {
   const response = await api.get(`/customers/${customerId}/treatments`, {
-    params: { page, size },
+    params: {
+      page,
+      size,
+      category: category?.trim() ? category.trim() : undefined,
+      sortDirection,
+    },
   });
+  
   return response.data;
 };
 

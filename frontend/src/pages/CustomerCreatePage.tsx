@@ -5,6 +5,7 @@ import type {
   CustomerCreateRequestDto,
   CustomerResponseDto,
 } from "../types/customer";
+import Header from "../components/Header";
 import "../styles/CustomerCreatePage.css";
 
 export default function CustomerCreatePage() {
@@ -72,6 +73,8 @@ export default function CustomerCreatePage() {
 
   return (
     <div className="customer-create-page">
+      <Header />
+
       <div className="customer-create-card">
         <h1 className="customer-create-title">고객 등록</h1>
         <p className="customer-create-subtitle">새 고객 정보를 입력해주세요</p>

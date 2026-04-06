@@ -17,13 +17,16 @@ public interface TreatmentMapper {
     List<TreatmentDto> selectTreatmentsByCustomerIdAndDesignerId(
             @Param("customerId") Long customerId,
             @Param("designerId") Long designerId,
+            @Param("category") String category,
+            @Param("sortDirection") String sortDirection,
             @Param("offset") int offset,
             @Param("size") int size
     );
 
     long countTreatmentsByCustomerIdAndDesignerId(
             @Param("customerId") Long customerId,
-            @Param("designerId") Long designerId
+            @Param("designerId") Long designerId,
+            @Param("category") String category
     );
 
     // 시술 단건 조회

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { createTreatmentApi } from "../api/treatment";
 import { uploadTreatmentImageApi } from "../api/fileApi";
 import type { TreatmentCreateRequestDto } from "../types/treatment";
+import Header from "../components/Header";
 import "../styles/TreatmentCreatePage.css";
 
 type PreviewFile = {
@@ -102,6 +103,8 @@ export default function TreatmentCreatePage() {
 
   return (
     <div className="treatment-create-page">
+      <Header />
+      
       <div className="treatment-create-card">
         <div className="treatment-create-header">
           <h1 className="treatment-create-title">시술 이력 등록</h1>

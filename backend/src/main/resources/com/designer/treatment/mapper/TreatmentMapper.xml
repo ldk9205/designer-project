@@ -59,7 +59,19 @@
         FROM treatments
         WHERE customer_id = #{customerId}
         AND designer_id = #{designerId}
-        ORDER BY treatment_date DESC, treatment_time DESC, id DESC
+        <if test="category != null and category != ''">
+            AND category LIKE CONCAT('%', #{category}, '%')
+        </if>
+
+        <choose>
+            <when test="sortDirection == 'asc'">
+                ORDER BY treatment_date ASC, treatment_time ASC, id ASC
+            </when>
+            <otherwise>
+                ORDER BY treatment_date DESC, treatment_time DESC, id DESC
+            </otherwise>
+        </choose>
+
         LIMIT #{size} OFFSET #{offset}
     </select>
 
@@ -68,6 +80,9 @@
         FROM treatments
         WHERE customer_id = #{customerId}
         AND designer_id = #{designerId}
+        <if test="category != null and category != ''">
+            AND category LIKE CONCAT('%', #{category}, '%')
+        </if>
     </select>
 
     <!-- 시술 단건 조회 -->

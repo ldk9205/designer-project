@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import Header from "../components/Header";
 import "../styles/LoginPage.css";
 
 export default function LoginPage() {

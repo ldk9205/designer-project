@@ -5,6 +5,7 @@ import {
   getTreatmentDetailApi,
 } from "../api/treatment";
 import type { TreatmentDetailResponseDto } from "../types/treatment";
+import Header from "../components/Header";
 import "../styles/TreatmentDetailPage.css";
 
 export default function TreatmentDetailPage() {
@@ -88,6 +89,8 @@ export default function TreatmentDetailPage() {
 
   return (
     <div className="treatment-detail-page">
+      <Header />
+      
       <div className="treatment-detail-card">
         <div className="treatment-detail-header">
           <h1 className="treatment-detail-title">시술 상세 이력</h1>
