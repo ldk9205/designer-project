@@ -52,7 +52,10 @@ public class SecurityConfig {
                 // CORS 설정
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:3000")); // 허용할 프론트 Origin
+                    config.setAllowedOrigins(List.of(
+                            "http://localhost:3000",
+                            "http://13.63.26.83"
+                    )); // 허용할 프론트 Origin
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // 허용할 HTTP 메서드
                     config.setAllowedHeaders(List.of("Authorization", "Content-Type")); // 허용할 헤더(프론트에서 보내는 헤더)
                     config.setAllowCredentials(true); // 쿠키 포함 요청 허용(refreshToken 쿠키)
