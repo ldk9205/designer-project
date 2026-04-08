@@ -46,7 +46,7 @@ export default function TreatmentCreatePage() {
     const files = Array.from(e.target.files ?? []);
 
     const newPreviewFiles = files.map((file) => ({
-      id: `${file.name}-${file.size}-${file.lastModified}-${crypto.randomUUID()}`,
+      id: `${file.name}-${file.size}-${file.lastModified}-${Date.now()}-${Math.random().toString(36).slice(2)}`,
       file,
       previewUrl: URL.createObjectURL(file),
     }));
@@ -104,7 +104,7 @@ export default function TreatmentCreatePage() {
   return (
     <div className="treatment-create-page">
       <Header />
-      
+
       <div className="treatment-create-card">
         <div className="treatment-create-header">
           <h1 className="treatment-create-title">시술 이력 등록</h1>

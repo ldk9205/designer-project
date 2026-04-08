@@ -94,10 +94,11 @@ export default function TreatmentEditPage() {
     const files = Array.from(e.target.files ?? []);
 
     const newPreviewFiles = files.map((file) => ({
-      id: `${file.name}-${file.size}-${file.lastModified}-${crypto.randomUUID()}`,
+      id: `${file.name}-${file.size}-${file.lastModified}-${Date.now()}-${Math.random().toString(36).slice(2)}`,
       file,
       previewUrl: URL.createObjectURL(file),
     }));
+    console.log("파일 선택됨:", e.target.files);
 
     setPreviewFiles((prev) => [...prev, ...newPreviewFiles]);
     e.target.value = "";
@@ -133,20 +134,32 @@ export default function TreatmentEditPage() {
     e.preventDefault();
 
     try {
+      console.log("🔥 수정 시작");
+      console.log("previewFiles =", previewFiles);
+
       setSaving(true);
       setError("");
 
       await updateTreatmentApi(numericTreatmentId, form);
 
+      console.log("✅ updateTreatmentApi 완료");
+
       for (const item of previewFiles) {
+        console.log("📤 업로드 시도:", item.file.name);
+
         await uploadTreatmentImageApi(numericTreatmentId, item.file);
+
+        console.log("✅ 업로드 성공:", item.file.name);
       }
+
+      console.log("🎉 전체 완료");
 
       alert("시술 이력이 수정되었습니다.");
       navigate(
         `/customers/${numericCustomerId}/treatments/${numericTreatmentId}`,
       );
     } catch (err: any) {
+      console.error("❌ 에러 발생:", err);
       setError(
         err?.response?.data?.message || err?.message || "시술 이력 수정 실패",
       );
@@ -162,7 +175,7 @@ export default function TreatmentEditPage() {
   return (
     <div className="treatment-edit-page">
       <Header />
-      
+
       <div className="treatment-edit-card">
         <div className="treatment-edit-header">
           <h1 className="treatment-edit-title">시술 이력 수정</h1>
