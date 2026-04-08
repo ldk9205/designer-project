@@ -85,7 +85,7 @@ export const uploadFileToS3 = async (
  * 🔥 401 발생 시 refresh 자동 실행
  */
 export const fetchCommunityList = async (): Promise<CommunityItem[]> => {
-  const res = await api.get<CommunityItem[]>("/api/community");
+  const res = await api.get<CommunityItem[]>("/community");
   return res.data;
 };
 
@@ -112,22 +112,24 @@ export const uploadTreatmentImageApi = async (
   const formData = new FormData();
   formData.append("file", file);
 
-  await api.post(`/api/treatments/${treatmentId}/images`, formData, {
+  await api.post(`/treatments/${treatmentId}/images`, formData
+    , {
     headers: {
       "Content-Type": "multipart/form-data",
     },
-  });
+  }
+);
 };
 
 export const getTreatmentImagesApi = async (
   treatmentId: number
 ): Promise<TreatmentImageItem[]> => {
-  const res = await api.get(`/api/treatments/${treatmentId}/images`);
+  const res = await api.get(`/treatments/${treatmentId}/images`);
   return res.data;
 };
 
 export const deleteTreatmentImageApi = async (imageId: number): Promise<void> => {
-  await api.delete(`/api/images/${imageId}`);
+  await api.delete(`/images/${imageId}`);
 };
 
 // export const fetchCommunityList = async (): Promise<CommunityItem[]> => {
